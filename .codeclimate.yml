@@ -1,0 +1,14 @@
+engines:
+  duplication: false
+  eslint:
+    enabled: true
+ratings:
+   paths:
+   - app/**
+   - lib/**
+   - "**.rb"
+   - "**.go"
+exclude_paths:
+- node_modules/**
+- public/**
+- test/**

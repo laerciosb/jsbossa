@@ -12,7 +12,7 @@ router
 
 // AUTHENTICATIONS ROUTES
 
-/* GET OAuth Facebook authentication. */
+  /* GET OAuth Facebook authentication. */
   .get('/facebook', sessionsController.facebook)
 
   /* GET OAuth callback for Facebook authentication. */

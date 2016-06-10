@@ -42,7 +42,7 @@ exports.show = function(req, res, next) {
         } else {
             // returns error when can not find user
             return console.log(err);
-        };
+        }
     });
 
 };
@@ -64,7 +64,7 @@ exports.create = function(req, res, next) {
         } else {
             // returns error when can not save user
             return console.log(err);
-        };
+        }
     });
 
 };
@@ -96,7 +96,7 @@ exports.update = function(req, res, next) {
                 } else {
                     // returns error when can not update user
                     return console.log(err);
-                };
+                }
             });
 
         } else {
@@ -128,7 +128,7 @@ exports.remove = function(req, res, next) {
                 } else {
                     // returns error when can not remove user
                     return console.log(err);
-                };
+                }
             });
 
         } else {

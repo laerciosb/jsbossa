@@ -1,0 +1,22 @@
+{
+  "name": "jsbossa",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Laércio <laerciosbezerra@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/vendors",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-route": "^1.5.5"
+  }
+}

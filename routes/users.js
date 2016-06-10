@@ -5,12 +5,10 @@ var router = express.Router();
 var usersController = require('../controllers/users');
 
 /*
- USERS ROUTES TO ANGULARJS CONSUME.
+ USERS ROUTES
  */
 
 router
-
-// USERS ROUTES
 
   /* GET Users for list all users. */
   .get('/', usersController.index)

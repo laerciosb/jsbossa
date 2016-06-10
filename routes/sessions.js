@@ -5,12 +5,10 @@ var router = express.Router();
 var sessionsController = require('../controllers/sessions');
 
 /*
- AUTHENTICATIONS ROUTES TO ANGULARJS CONSUME.
+ AUTHENTICATIONS ROUTES
  */
 
 router
-
-// AUTHENTICATIONS ROUTES
 
   /* GET OAuth Facebook authentication. */
   .get('/facebook', sessionsController.facebook)

@@ -1,6 +1,6 @@
 # jsbossa
 
-Aplicação teste para desenvolver funcionalidades semelhantes ao pybossa.
+Aplicação teste.
 
 ### Requisitos ###
 
@@ -30,7 +30,3 @@ Aplicação teste para desenvolver funcionalidades semelhantes ao pybossa.
 |   Action                                 | Required          | Method    | URL                                               
 | -----------------------------------------|-------------------|-----------|----------------------------------------------------- 
 |   List users                             |                   |  `GET`    | /users
-
-## Observações ##
-
-Created By **[LAViD Developers](http://lavid.ufpb.br/index.php/projetos/equipe/)** 2016.

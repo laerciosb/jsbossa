@@ -30,6 +30,8 @@ build/Release
 node_modules
 jspm_packages
 public/vendors
+
+# Optional webstorm cache directory
 .idea
 
 # Optional npm cache directory

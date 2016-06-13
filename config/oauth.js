@@ -4,6 +4,8 @@
  * OAuth Authentication Settings
  */
 
+"use strict";
+
 var host = 'http://localhost:3000';
 
 // Required Keys to use OAuth authentication

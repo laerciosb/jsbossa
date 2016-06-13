@@ -4,6 +4,8 @@
  * Content Model
  */
 
+"use strict";
+
 // Required lib
 var mongoose = require('mongoose');
 

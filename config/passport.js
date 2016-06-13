@@ -4,6 +4,8 @@
  * Passport.js Settings
  */
 
+"use strict";
+
 // Required Libs
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;

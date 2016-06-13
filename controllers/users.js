@@ -4,6 +4,8 @@
  * Users Controller
  */
 
+"use strict";
+
 // Required model
 var User = require('../models/user');
 var bcryptjs = require('bcryptjs');

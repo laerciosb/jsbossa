@@ -4,6 +4,8 @@
  * Authentications Controller
  */
 
+"use strict";
+
 // Required Lib
 var passport = require('../config/passport');
 

@@ -3,33 +3,51 @@
 [![Test Coverage](https://codeclimate.com/github/laerciosb/jsbossa/badges/coverage.svg)](https://codeclimate.com/github/laerciosb/jsbossa/coverage)
 [![Issue Count](https://codeclimate.com/github/laerciosb/jsbossa/badges/issue_count.svg)](https://codeclimate.com/github/laerciosb/jsbossa)
 
-Aplicação teste.
+Application test.
 
-### Requisitos ###
+### Requirements ###
 
 * **[Node.js 6.0.0](http://nodejs.org/en/)** :white_check_mark:
 * **[Express.js 4.13.1](http://expressjs.com/pt-br/)** :white_check_mark:
 
-### Instalação ###
+### Installation ###
 
-**Obs.: As instruções abaixo foram testadas na distribuição Ubuntu.**
+**Obs.: The following instructions were tested on Ubuntu distribution.**
 
-1. Após o clone da aplicação, execute os seguintes comandos para instalar as dependências:
-  - user@user:~/path_do_arquivo_clonado$ **npm install**
-  - user@user:~/path_do_arquivo_clonado$ **bower install**
-  - **Instalar manualmente as dependências que porventura não forem instaladas pelos comandos acima.** :white_check_mark:
+1. After 'git clone' command, run the following commands to install dependencies:
+  - user@user:~/path_to_cloned_folder$ **npm install**
+  - user@user:~/path_to_cloned_folder$ **bower install**
+  - **Manually install the dependencies that may have not been installed by the above command.** :white_check_mark:
 
-2. Start no servidor e acesso pelo browser
-  - user@user:~/path_do_arquivo_clonado$ **npm start**
-  - Acesse no navegador http://seu_ip:3000
+2. Start the server and access the browser
+  - user@user:~/path_to_cloned_folder$ **npm start**
+  - Access the browser http://localhost:3000
 
-## Ciclo de vida funcional da aplicação ##
+## Lifecycle of application ##
 
-1. Esta aplicação disponibiliza um CRUD de usuários através da API.
+1. This application provides a CRUD users through API.
+2. User authentication local and oauth (facebook and google). 
+**Required settings in config/oauth.js and config/passport.js**
 
+## API Routes ##
 
-## API Rotas ##
+# Auth
+|   Action                                 | Required          | Method    | URL                                               
+| -----------------------------------------|-------------------|-----------|----------------------------------------------------- 
+|   Sign in user by OAuth (facebook)       |                   |  `GET`    | /auth/facebook
+|   Response auth to server (facebook)     |                   |  `GET`    | /auth/facebook/callback
+|   Sign in user by OAuth (google)         |                   |  `GET`    | /auth/google
+|   Response auth to server (google)       |                   |  `GET`    | /auth/google/callback
+|   Get user authenticated                 |                   |  `GET`    | /auth/current_user
+|   GET User authentication status         |                   |  `GET`    | /auth/loggedin
+|   Sign out user                          |                   |  `GET`    | /auth/logout
+|   Sign in user (local authentication)    |                   |  `POST`   | /auth/login
 
+# Users
 |   Action                                 | Required          | Method    | URL                                               
 | -----------------------------------------|-------------------|-----------|----------------------------------------------------- 
 |   List users                             |                   |  `GET`    | /users
+|   Create user                            |                   |  `POST`   | /users
+|   Read user                              |                   |  `GET`    | /users/:id
+|   Update user                            |                   |  `PUT`    | /users/:id
+|   Delete user                            |                   |  `DELETE` | /users/:id

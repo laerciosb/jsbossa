@@ -4,7 +4,6 @@
  * OAuth Authentication Settings
  */
 
-// var host = 'http://150.165.205.185:3000';
 var host = 'http://localhost:3000';
 
 // Required Keys to use OAuth authentication

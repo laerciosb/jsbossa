@@ -22,7 +22,7 @@ router
   /* GET OAuth callback for Google authentication. */
   .get('/google/callback', sessionsController.callback_google)
 
-  /* GET User authentication. */
+  /* GET User authenticated. */
   .get('/current_user', sessionsController.current_user)
 
   /* GET User authentication status. */

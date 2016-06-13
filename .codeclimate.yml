@@ -1,5 +1,6 @@
 engines:
-  duplication: false
+  duplication:
+    enabled: false
   eslint:
     enabled: true
 ratings:

@@ -1,11 +1,6 @@
 engines:
   duplication:
-    enabled: true
-    config:
-      languages:
-      - ruby
-        #mass_threshold: 30
-      - javascript
+    enabled: false
   eslint:
     enabled: true
 ratings:

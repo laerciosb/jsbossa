@@ -26,17 +26,17 @@ exports.callback_google = passport.authenticate('google', {
 });
 
 // GET User authentication
-exports.current_user = function(req, res, next) {
+exports.current_user = function(req, res) {
   res.send(req.isAuthenticated() ? req.user : '0');
 };
 
 // GET User authentication status
-exports.loggedin = function(req, res, next) {
-  res.send(req.isAuthenticated() ? true : false);
+exports.loggedin = function(req, res) {
+  res.send(!!req.isAuthenticated());
 };
 
 // GET Sign out action
-exports.logout = function(req, res, next) {
+exports.logout = function(req, res) {
   req.logout();
   res.redirect('/');
 };

@@ -29,8 +29,7 @@ passport.use(new FacebookStrategy(oauthConfig.Facebook,
       profileURL: profile.profileUrl,
       provider: profile.provider,
       token: accessToken,
-      auth: 'Facebook',
-      admin: false,
+      auth: 'Facebook'
     };
 
     // console.log(user);
@@ -50,8 +49,7 @@ passport.use(new GoogleStrategy(oauthConfig.Google,
       profileURL: 'http://plus.google.com/',
       provider: profile.provider,
       token: accessToken,
-      auth: 'Google',
-      admin: false,
+      auth: 'Google'
     };
 
     // console.log(user);
@@ -61,15 +59,15 @@ passport.use(new GoogleStrategy(oauthConfig.Google,
 
 // Required user model to LocalStrategy
 var User = require('../models/user');
-var bcrypt = require('bcrypt');
+var bcryptjs = require('bcryptjs');
 
 // Local Auth
 passport.use(new LocalStrategy ({ usernameField: 'email',
   passwordField: 'password' }, function (username, password, done) {
     User.findOne({ email: username }, function(err, user) {
-      if (err) return done(err)
+      if (err) return done(err);
 
-      if (!user || !bcrypt.compareSync(password, user.password))
+      if (!user || !bcryptjs.compareSync(password, user.password))
         return done(null, false, 'Usuário ou senha inválido.');
 
       return done(null, user);

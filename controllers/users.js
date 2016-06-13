@@ -6,7 +6,7 @@
 
 // Required model
 var User = require('../models/user');
-var bcrypt = require('bcrypt');
+var bcryptjs = require('bcryptjs');
 
 // GET Users resource action
 exports.index = function(req, res) {
@@ -52,7 +52,7 @@ exports.create = function(req, res) {
 
   // Receive body user
   var user = new User(req.body);
-  user.password = bcrypt.hashSync(user.password, 8);
+  user.password = bcryptjs.hashSync(user.password, 8);
 
   // Save user on MongoDB
   user.save(function(err) {
@@ -82,11 +82,20 @@ exports.update = function(req, res) {
   return User.findById(id, function (err, user) {
     if (!err) {
 
+      // Validate presence of fields
+      user.name = body.name || user.name;
+      user.email = body.email || user.email;
+
+      // Validate password field
+      if(body.password){
+        user.password = bcryptjs.hashSync(body.password, 8);
+      }
+
       // Update user on MongoDB
       user.update({
-        name : body.name,
-        email : body.email,
-        password : bcrypt.hashSync(body.password, 8)
+        name : user.name,
+        email : user.email,
+        password : user.password
       }, function (err) {
         if (!err) {
 

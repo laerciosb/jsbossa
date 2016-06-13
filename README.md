@@ -31,7 +31,7 @@ Application test.
 
 ## API Routes ##
 
-# Auth
+### Auth ###
 |   Action                                 | Required          | Method    | URL                                               
 | -----------------------------------------|-------------------|-----------|----------------------------------------------------- 
 |   Sign in user by OAuth (facebook)       |                   |  `GET`    | /auth/facebook
@@ -43,7 +43,7 @@ Application test.
 |   Sign out user                          |                   |  `GET`    | /auth/logout
 |   Sign in user (local authentication)    |                   |  `POST`   | /auth/login
 
-# Users
+### Users ###
 |   Action                                 | Required          | Method    | URL                                               
 | -----------------------------------------|-------------------|-----------|----------------------------------------------------- 
 |   List users                             |                   |  `GET`    | /users

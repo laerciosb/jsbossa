@@ -13,5 +13,5 @@ mongoose.connect('mongodb://localhost/jsbossa', function(err) {
         console.log('MongoDB connection error: ', err);
     } else {
         console.log('MongoDB connection successful');
-    };
+    }
 });

@@ -10,18 +10,6 @@ var sessionsController = require('../controllers/sessions');
 
 router
 
-  /* GET OAuth Facebook authentication. */
-  .get('/facebook', sessionsController.facebook)
-
-  /* GET OAuth callback for Facebook authentication. */
-  .get('/facebook/callback', sessionsController.callback_facebook)
-
-  /* GET OAuth Google authentication. */
-  .get('/google', sessionsController.google)
-
-  /* GET OAuth callback for Google authentication. */
-  .get('/google/callback', sessionsController.callback_google)
-
   /* GET to Logout session account. */
   .get('/logout', sessionsController.logout)
 

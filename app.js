@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var db = require('./config/db');
 var passport = require('./config/passport');
 var expressSession = require('express-session');
+var flash = require('express-flash');
 
 var routes = require('./routes/index');
 var sessions = require('./routes/sessions');
@@ -32,6 +33,7 @@ app.use(expressSession({
   resave: true,
   saveUninitialized: true
 }));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -51,7 +53,7 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
+  app.use(function(err, req, res) {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
@@ -62,7 +64,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,

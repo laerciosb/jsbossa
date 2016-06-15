@@ -6,4 +6,7 @@ html
     link(rel='stylesheet', href='/vendors/bootstrap/dist/css/bootstrap.min.css')
 
   body
+    - if (messages)
+      .messages.error
+        span= messages.error
     block content

@@ -5,7 +5,7 @@ var router = express.Router();
 var sessionsController = require('../controllers/sessions');
 
 /*
- AUTHENTICATIONS ROUTES
+ SESSIONS ROUTES
  */
 
 router
@@ -21,12 +21,6 @@ router
 
   /* GET OAuth callback for Google authentication. */
   .get('/google/callback', sessionsController.callback_google)
-
-  /* GET User authenticated. */
-  .get('/current_user', sessionsController.current_user)
-
-  /* GET User authentication status. */
-  .get('/loggedin', sessionsController.loggedin)
 
   /* GET to Logout session account. */
   .get('/logout', sessionsController.logout)

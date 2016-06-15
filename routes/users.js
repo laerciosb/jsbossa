@@ -3,12 +3,16 @@
 var express = require('express');
 var router = express.Router();
 var usersController = require('../controllers/users');
+var sessionsHelper = require('../helpers/sessions');
 
 /*
  USERS ROUTES
  */
 
 router
+
+  /* Before action validation if user is authenticated. */
+  .all('*', sessionsHelper.requireAuthenticated)
 
   /* GET Users for list all users. */
   .get('/', usersController.index)

@@ -1,7 +1,7 @@
 // Author - Laércio S Bezerra | laerciosouza@lavid.ufpb.br
 
 /*
- * Authentications Controller
+ * Sessions Controller
  */
 
 "use strict";
@@ -26,16 +26,6 @@ exports.callback_google = passport.authenticate('google', {
   successRedirect : '/',
   failureRedirect : '/login'
 });
-
-// GET User authentication
-exports.current_user = function(req, res) {
-  res.send(req.isAuthenticated() ? req.user : '0');
-};
-
-// GET User authentication status
-exports.loggedin = function(req, res) {
-  res.send(!!req.isAuthenticated());
-};
 
 // GET Sign out action
 exports.logout = function(req, res) {

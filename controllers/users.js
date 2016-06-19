@@ -85,25 +85,6 @@ exports.create = function(req, res) {
       if (err) return console.log(err);
     });
   });
-
-
-  // Role.findOne({ 'name': 'user' }, 'name', function (err, role) {
-  //   if (err) return console.log(err);
-  //   user.roles.push(role);
-  //   // Save user on MongoDB
-  //   user.save(function(err) {
-  //     if (!err) {
-  //
-  //       // returns json when save user
-  //       res.json(user);
-  //
-  //     } else {
-  //       // returns error when can not save user
-  //       return console.log(err);
-  //     }
-  //   });
-  // });
-
 };
 
 // PUT User update resource action

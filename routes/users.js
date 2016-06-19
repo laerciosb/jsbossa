@@ -19,18 +19,18 @@ router
   })
 
   /* GET Users for list all users. */
-  .get('/', usersController.index)
+  .get('/', user.can('access users index'), usersController.index)
 
   /* GET User by ID for show the user. */
-  .get('/:id', usersController.show)
+  .get('/:id', user.can('access users show'), usersController.show)
 
   /* POST User for create a user. */
-  .post('/', usersController.create)
+  .post('/', user.is('expert'), usersController.create)
 
   /* PUT User by ID for update the user. */
-  .put('/:id', usersController.update)
+  .put('/:id', user.is('expert'), usersController.update)
 
   /* DELETE User by ID for remove the user. */
-  .delete('/:id', usersController.remove);
+  .delete('/:id', user.is('expert'), usersController.remove);
 
 module.exports = router;

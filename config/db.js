@@ -17,3 +17,5 @@ mongoose.connect('mongodb://localhost/jsbossa', function(err) {
     console.log('MongoDB connection successful');
   }
 });
+
+module.exports = mongoose;

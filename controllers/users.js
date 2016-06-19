@@ -24,7 +24,7 @@ exports.index = function(req, res) {
       // returns error when can not find users
       return console.log(err);
     }
-  });
+  }).populate({ path: 'roles', select: 'name' });
 
 };
 
@@ -55,19 +55,54 @@ exports.create = function(req, res) {
   // Receive body user
   var user = new User(req.body);
   user.password = bcryptjs.hashSync(user.password, 8);
+  var Role = require('../models/role');
+  var _role;
 
-  // Save user on MongoDB
-  user.save(function(err) {
-    if (!err) {
+  var promise = Role.findOne({ 'name': 'user' }, function (err, role) {
+    if (err) return console.log(err);
+    user.roles.push(role);
+    role.users.push(user);
+    _role = role;
+  }).exec();
 
-      // returns json when save user
-      res.json(user);
+  promise.then(function () {
+    // Save user on MongoDB
+    user.save(function(err) {
+      if (!err) {
 
-    } else {
-      // returns error when can not save user
-      return console.log(err);
-    }
+        // returns json when save user
+        res.json(user);
+
+      } else {
+        // returns error when can not save user
+        return console.log(err);
+      }
+    });
+  })
+  .then(function () {
+    // Save user on MongoDB
+    Role.update({_id : _role._id}, _role, function(err) {
+      if (err) return console.log(err);
+    });
   });
+
+
+  // Role.findOne({ 'name': 'user' }, 'name', function (err, role) {
+  //   if (err) return console.log(err);
+  //   user.roles.push(role);
+  //   // Save user on MongoDB
+  //   user.save(function(err) {
+  //     if (!err) {
+  //
+  //       // returns json when save user
+  //       res.json(user);
+  //
+  //     } else {
+  //       // returns error when can not save user
+  //       return console.log(err);
+  //     }
+  //   });
+  // });
 
 };
 

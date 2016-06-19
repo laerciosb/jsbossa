@@ -73,7 +73,7 @@ passport.use(new LocalStrategy ({ usernameField: 'email',
         return done(null, false, 'Usuário ou senha inválido.');
 
       return done(null, user);
-    });
+    }).populate('roles', 'name');
 }));
 
 module.exports = passport;

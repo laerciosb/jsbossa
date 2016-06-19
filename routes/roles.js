@@ -3,12 +3,19 @@
 var express = require('express');
 var router = express.Router();
 var rolesController = require('../controllers/roles');
+var sessionsHelper = require('../helpers/sessions');
+var user = require('../config/connect_roles');
 
 /*
- USERS ROUTES
+ ROLES ROUTES
  */
 
 router
+
+  /* For all requests it's required that the user should be authenticated. */
+  .get('*', [sessionsHelper.authenticated, user.is('admin')], function (req, res, next) {
+    return next();
+  })
 
   /* GET Roles for list all roles. */
   .get('/', rolesController.index)

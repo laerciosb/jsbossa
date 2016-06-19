@@ -10,6 +10,7 @@ db.Promise = require('bluebird');
 var connectRoles = require('./config/connect_roles');
 var passport = require('./config/passport');
 var expressSession = require('express-session');
+var flash = require('express-flash');
 
 var routes = require('./routes/index');
 var sessions = require('./routes/sessions');
@@ -35,6 +36,7 @@ app.use(expressSession({
   resave: true,
   saveUninitialized: true
 }));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(connectRoles.middleware());

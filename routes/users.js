@@ -19,10 +19,10 @@ router
   })
 
   /* GET Users for list all users. */
-  .get('/', user.can('access users index'), usersController.index)
+  .get('/', usersController.index)
 
   /* GET User by ID for show the user. */
-  .get('/:id', user.can('access users show'),  usersController.show)
+  .get('/:id', usersController.show)
 
   /* POST User for create a user. */
   .post('/', usersController.create)

@@ -1,4 +1,5 @@
 # jsbossa
+[![Build Status](https://travis-ci.org/ProjetosIFPB/RAD_Project.svg?branch=master)](https://travis-ci.org/laerciosb/jsbossa)
 [![Code Climate](https://codeclimate.com/github/laerciosb/jsbossa/badges/gpa.svg)](https://codeclimate.com/github/laerciosb/jsbossa)
 [![Test Coverage](https://codeclimate.com/github/laerciosb/jsbossa/badges/coverage.svg)](https://codeclimate.com/github/laerciosb/jsbossa/coverage)
 [![Issue Count](https://codeclimate.com/github/laerciosb/jsbossa/badges/issue_count.svg)](https://codeclimate.com/github/laerciosb/jsbossa)
@@ -26,8 +27,7 @@ Application test.
 ## Lifecycle of application ##
 
 1. This application provides a CRUD users through API.
-2. User authentication local and oauth (facebook and google). 
-**Required settings in config/oauth.js and config/passport.js**
+2. User authentication local.
 
 ## API Routes ##
 

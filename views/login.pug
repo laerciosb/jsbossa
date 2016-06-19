@@ -1,28 +1,15 @@
-// Author - Laércio S Bezerra | laerciosouza@lavid.ufpb.br
+extends layout
 
-var express = require('express');
-var router = express.Router();
-var rolesController = require('../controllers/roles');
-
-/*
- USERS ROUTES
- */
-
-router
-
-  /* GET Roles for list all roles. */
-  .get('/', rolesController.index)
-
-  /* GET Role by ID for show the role. */
-  .get('/:id', rolesController.show)
-
-  /* POST Role for create a role. */
-  .post('/', rolesController.create)
-
-  /* PUT Role by ID for update the role. */
-  .put('/:id', rolesController.update)
-
-  /* DELETE Role by ID for remove the role. */
-  .delete('/:id', rolesController.remove);
-
-module.exports = router;
+block content
+  .container
+    h1 Login Page
+    p.lead Say something worthwhile here.
+    br
+    form(role='form', action="/auth/login",method="post", style='max-width: 300px;')
+      .form-group
+        input.form-control(type='text', name="email", placeholder='Enter Email')
+      .form-group
+        input.form-control(type='password', name="password", placeholder='Password')
+      button.btn.btn-default(type='submit') Submit
+  a(href='/')
+    button.btn.btn-primary(type="button") Cancel

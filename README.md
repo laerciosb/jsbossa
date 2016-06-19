@@ -50,8 +50,8 @@ Application test.
 ### Roles ###
 |   Action                                 | Required          | Method    | URL
 | -----------------------------------------|-------------------|-----------|-----------------------------------------------------
-|   List roles                             | Auth and Admin    |  `GET`    | /users
-|   Create role                            | Auth and Admin    |  `POST`   | /users
-|   Read role                              | Auth and Admin    |  `GET`    | /users/:id
-|   Update role                            | Auth and Admin    |  `PUT`    | /users/:id
-|   Delete role                            | Auth and Admin    |  `DELETE` | /users/:id
+|   List roles                             | Auth and Admin    |  `GET`    | /roles
+|   Create role                            | Auth and Admin    |  `POST`   | /roles
+|   Read role                              | Auth and Admin    |  `GET`    | /roles/:id
+|   Update role                            | Auth and Admin    |  `PUT`    | /roles/:id
+|   Delete role                            | Auth and Admin    |  `DELETE` | /roles/:id

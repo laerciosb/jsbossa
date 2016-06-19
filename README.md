@@ -28,26 +28,30 @@ Application test.
 
 1. This application provides a CRUD users through API.
 2. User authentication local.
+3. User authorization access by actions and roles.
 
 ## API Routes ##
 
 ### Auth ###
 |   Action                                 | Required          | Method    | URL                                               
 | -----------------------------------------|-------------------|-----------|----------------------------------------------------- 
-|   Sign in user by OAuth (facebook)       |                   |  `GET`    | /auth/facebook
-|   Response auth to server (facebook)     |                   |  `GET`    | /auth/facebook/callback
-|   Sign in user by OAuth (google)         |                   |  `GET`    | /auth/google
-|   Response auth to server (google)       |                   |  `GET`    | /auth/google/callback
-|   Get user authenticated                 |                   |  `GET`    | /auth/current_user
-|   GET User authentication status         |                   |  `GET`    | /auth/loggedin
-|   Sign out user                          |                   |  `GET`    | /auth/logout
+|   Sign out user                          | Auth and User     |  `GET`    | /auth/logout
 |   Sign in user (local authentication)    |                   |  `POST`   | /auth/login
 
 ### Users ###
 |   Action                                 | Required          | Method    | URL                                               
 | -----------------------------------------|-------------------|-----------|----------------------------------------------------- 
-|   List users                             |                   |  `GET`    | /users
-|   Create user                            |                   |  `POST`   | /users
-|   Read user                              |                   |  `GET`    | /users/:id
-|   Update user                            |                   |  `PUT`    | /users/:id
-|   Delete user                            |                   |  `DELETE` | /users/:id
+|   List users                             | Auth and User     |  `GET`    | /users
+|   Create user                            | Auth and Expert   |  `POST`   | /users
+|   Read user                              | Auth and Expert   |  `GET`    | /users/:id
+|   Update user                            | Auth and Expert   |  `PUT`    | /users/:id
+|   Delete user                            | Auth and Expert   |  `DELETE` | /users/:id
+
+### Roles ###
+|   Action                                 | Required          | Method    | URL
+| -----------------------------------------|-------------------|-----------|-----------------------------------------------------
+|   List roles                             | Auth and Admin    |  `GET`    | /users
+|   Create role                            | Auth and Admin    |  `POST`   | /users
+|   Read role                              | Auth and Admin    |  `GET`    | /users/:id
+|   Update role                            | Auth and Admin    |  `PUT`    | /users/:id
+|   Delete role                            | Auth and Admin    |  `DELETE` | /users/:id

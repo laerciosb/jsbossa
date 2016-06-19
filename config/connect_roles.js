@@ -27,7 +27,7 @@ var user = new ConnectRoles({
 // Admin users can access all pages
 user.use(function (req) {
   if(req.isAuthenticated()){
-    return userHelper.isRole(req.user, ['admin']);
+    if(userHelper.isRole(req.user, ['admin'])) return true;
   }
 });
 
@@ -46,7 +46,8 @@ user.use('user', function (req) {
 
 // Define methods to validate action roles
 user.use('access users index', function (req) {
-  return userHelper.isRole(req.user, ['user']);
+  console.log("access users index");
+  return userHelper.isRole(req.user, ['user', 'expert']);
 });
 
 user.use('access users show', function (req) {

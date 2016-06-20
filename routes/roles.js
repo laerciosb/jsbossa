@@ -12,24 +12,19 @@ var user = require('../config/connect_roles');
 
 router
 
-  /* For all requests it's required that the user should be authenticated. */
-  .get('*', [sessionsHelper.authenticated, user.is('admin')], function (req, res, next) {
-    return next();
-  })
-
   /* GET Roles for list all roles. */
-  .get('/', rolesController.index)
+  .get('/', [sessionsHelper.authenticated, user.is('admin')], rolesController.index)
 
   /* GET Role by ID for show the role. */
-  .get('/:id', rolesController.show)
+  .get('/:id', [sessionsHelper.authenticated, user.is('admin')], rolesController.show)
 
   /* POST Role for create a role. */
-  .post('/', rolesController.create)
+  .post('/', [sessionsHelper.authenticated, user.is('admin')], rolesController.create)
 
   /* PUT Role by ID for update the role. */
-  .put('/:id', rolesController.update)
+  .put('/:id', [sessionsHelper.authenticated, user.is('admin')], rolesController.update)
 
   /* DELETE Role by ID for remove the role. */
-  .delete('/:id', rolesController.remove);
+  .delete('/:id', [sessionsHelper.authenticated, user.is('admin')], rolesController.remove);
 
 module.exports = router;

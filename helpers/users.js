@@ -19,3 +19,10 @@ exports.isRole = function(user, role) {
   });
   return _role;
 };
+
+// Return true if req.user._id is the same as did informed at parameter
+exports.isMe = function(user, resource_id) {
+  console.log("user: " + user._id);
+  console.log("resource_id: " + resource_id);
+  return !!(user._id === resource_id);
+};

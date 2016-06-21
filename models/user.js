@@ -21,7 +21,7 @@ var userSchema = new Schema({
 
 userSchema.plugin(uniqueValidator);
 
-// assign a function to the "methods" object of our animalSchema
+// assign a function to the "methods" object of our userSchema
 userSchema.statics.getRoles = function getRoles(id) {
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -31,7 +31,7 @@ userSchema.statics.getRoles = function getRoles(id) {
     return this.findOne({ _id: id })
       .populate('roles', 'name') // only return the Roles name
       .exec(function (err, user) {
-          if (err) return handleError(err);
+          if (err) return console.log(err);
           console.log('The roles is %s', user.roles);
       });
 };

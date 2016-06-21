@@ -22,7 +22,7 @@ router
   .post('/', usersController.create)
 
   /* PUT User by ID for update the user. */
-  .put('/:id', [sessionsHelper.authenticated, user.is('expert')], usersController.update)
+  .put('/:id', [sessionsHelper.authenticated, user.can('access users edit')], usersController.update)
 
   /* DELETE User by ID for remove the user. */
   .delete('/:id', [sessionsHelper.authenticated, user.is('expert')], usersController.remove);

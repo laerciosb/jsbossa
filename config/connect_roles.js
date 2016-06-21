@@ -54,4 +54,8 @@ user.use('access users show', function (req) {
   return userHelper.isRole(req.user, ['expert']);
 });
 
+user.use('access users edit', function (req) {
+  return userHelper.isMe(req.user, req.params.id);
+});
+
 module.exports = user;

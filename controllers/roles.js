@@ -115,28 +115,41 @@ exports.remove = function(req, res) {
     // Receive param id
     var id = req.params.id;
 
-    // Find role by id
-    return Role.findById(id, function (err, role) {
-        if (!err) {
+    var promise = Role.getSafeRoles();
+    promise.then(function (roles) {
+        if (roles.length != 0) {
+            roles.forEach(function (r) {
+                // Find role by id
+                if(r._id == id){
+                    return Role.findById(r._id, function (err, role) {
+                        if (!err) {
 
-            // Remove role on MongoDB
-            role.remove(function (err) {
-                if (!err) {
+                            // Remove role on MongoDB
+                            role.remove(function (err) {
+                                if (!err) {
 
-                    // returns json when remove role
-                    res.json({message : 'deleted', item : role});
+                                    // returns json when remove role
+                                    res.json({message : 'deleted', item : role});
+                                    return role;
 
-                } else {
-                    // returns error when can not remove role
-                    return console.log(err);
+                                } else {
+                                    // returns error when can not remove role
+                                    return console.log(err);
+                                }
+                            });
+
+                        } else {
+                            // returns error when can not find id of role
+                            return console.log(err);
+                        }
+
+                    });
                 }
-            });
 
+            })
         } else {
-            // returns error when can not find id of role
-            return console.log(err);
+            res.json({message : 'Sorry, this Role not should be deleted.'})
         }
-
     });
 
 };

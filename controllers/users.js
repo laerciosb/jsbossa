@@ -68,15 +68,10 @@ exports.create = function(req, res) {
   promise.then(function () {
     // Save user on MongoDB
     user.save(function(err) {
-      if (!err) {
-
-        // returns json when save user
-        res.json(user);
-
-      } else {
-        // returns error when can not save user
-        return console.log(err);
-      }
+      // returns error when can not save user
+      if (err) return console.log(err);
+      // returns json when save user
+      res.json(user);
     });
   })
   .then(function () {
@@ -142,27 +137,32 @@ exports.remove = function(req, res) {
   var id = req.params.id;
 
   // Find user by id
-  return User.findById(id, function (err, user) {
-    if (!err) {
-
-      // Remove user on MongoDB
-      user.remove(function (err) {
-        if (!err) {
-
-          // returns json when remove user
-          res.json({message : 'deleted', item : user});
-
-        } else {
-          // returns error when can not remove user
-          return console.log(err);
-        }
+  var promise = User.getRoles(id);
+  promise.then(function (user) {
+    // Remove user on MongoDB
+    user.remove(function (err) {
+      // returns error when can not save user
+      if (err) return console.log(err);
+      // returns json when remove user
+      res.json({message : 'deleted', item : user});
+    });
+    return user;
+  })
+  .then(function (user) {
+    var Role = require('../models/role');
+    user.roles.forEach(function (role_id) {
+      // Save user on MongoDB
+      var promise = Role.findById(role_id).exec();
+      promise.then(function (role) {
+        role.users.pull(user._id);
+        role.save(function (err) {
+          // returns error when can not save user
+          if (err) return console.log(err);
+        });
       });
 
-    } else {
-      // returns error when can not find id of user
-      return console.log(err);
-    }
-
+    });
   });
+
 
 };

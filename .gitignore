@@ -30,11 +30,11 @@ build/Release
 node_modules
 jspm_packages
 public/vendors
+undefined
 
-# Optional webstorm cache directory
+# Optional cache directory
 .idea
-
-# Optional npm cache directory
+.vscode
 .npm
 
 # Optional REPL history

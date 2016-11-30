@@ -6,10 +6,12 @@
 
 Application test.
 
+---
+
 ### Requirements ###
 
-* **[Node.js 6.0.0](http://nodejs.org/en/)** :white_check_mark:
-* **[Express.js 4.13.1](http://expressjs.com/pt-br/)** :white_check_mark:
+* **[Node.js 6.9.1 LTS](http://nodejs.org/en/)** :white_check_mark:
+* **[MongoDB 3.2.8](https://docs.mongodb.com/)** :white_check_mark:
 
 ### Installation ###
 
@@ -24,11 +26,16 @@ Application test.
   - user@user:~/path_to_cloned_folder$ **npm start**
   - Access the browser http://localhost:3000
 
+
+---
+
 ## Lifecycle of application ##
 
 1. This application provides a CRUD users through API.
 2. User authentication local.
 3. User authorization access by actions and roles.
+
+---
 
 ## API Routes ##
 
@@ -55,3 +62,13 @@ Application test.
 |   Read role                              | Auth and Admin    |  `GET`    | /roles/:id
 |   Update role                            | Auth and Admin    |  `PUT`    | /roles/:id
 |   Delete role                            | Auth and Admin    |  `DELETE` | /roles/:id
+
+---
+
+## Contributors
+
+* Laércio de Souza Bezerra ([laerciosb](https://github.com/laerciosb)) laerciosouza@lavid.ufpb.br
+
+>Created By **[LaercioSB](http://lavid.ufpb.br/index.php/projetos/equipe/)** 2016.
+
+---

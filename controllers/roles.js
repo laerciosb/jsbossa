@@ -55,7 +55,7 @@ exports.create = function(req, res, next) {
   var role = new Role(req.body);
 
   // Save role on MongoDB
-  role.save(function(err) {
+  role.save(function(err, role) {
     // returns in error case
     if (err) return errors.dbError(err, next);
     // returns json when find roles
@@ -82,9 +82,10 @@ exports.update = function(req, res, next) {
       // Get the protected roles that cannot be removed
       resolve(Role.getProtectedRoles());
     })
+      // When promise is ready
       .then(function(protectedRoles) {
         // Receive body role
-        role.name = req.body.name;
+        role.name = req.body.name ? req.body.name : role.name;
 
         var compareRole = JSON.stringify(role);
         for (var i in protectedRoles) {
@@ -128,6 +129,7 @@ exports.remove = function(req, res, next) {
       // Get the protected roles that cannot be removed
       resolve(Role.getProtectedRoles());
     })
+      // When promise is ready
       .then(function(protectedRoles) {
         var compareRole = JSON.stringify(role);
 

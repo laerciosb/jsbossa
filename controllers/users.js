@@ -9,160 +9,143 @@
 // Required model
 var User = require('../models/user');
 var bcryptjs = require('bcryptjs');
+var errors = require('../helpers/errors');
 
 // GET Users resource action
-exports.index = function(req, res) {
+exports.index = function(req, res, next) {
+
+  // Receive query
+  var query = {};
+
+  var role = req.query.role;
+  if(role) query.role = role;
 
   // Find all users on MongoDB
-  return User.find(function (err, users) {
-    if (!err) {
-
-      // returns json with all users
-      res.json(users);
-
-    } else {
-      // returns error when can not find users
-      return console.log(err);
-    }
-  }).populate({ path: 'roles', select: 'name' });
+  return User.find(query, function (err, users) {
+    // returns in error case
+    if (err) return errors.dbError(err, next);
+    // returns json when find users
+    res.json(users);
+  })
+    .populate({ path: 'roles', select: 'name' });
 
 };
 
 // GET User show resource action
-exports.show = function(req, res) {
+exports.show = function(req, res, next) {
 
   // Receive param id
-  var id = req.params.id;
+  var user_id = req.params.user_id;
 
   // Find user by id on MongoDB
-  return User.findById(id, function (err, user) {
-    if (!err) {
-
-      // returns json when find a user
-      res.json(user);
-
-    } else {
-      // returns error when can not find user
-      return console.log(err);
-    }
-  });
+  return User.findById(user_id, function (err, user) {
+    // returns error if user was not found
+    if (user === undefined || user === null)
+      return errors.notFound('The user was not found', next);
+    // returns in error case
+    if (err) return errors.dbError(err, next);
+    // returns json when find users
+    res.json(user);
+  })
+    .populate({ path: 'roles', select: 'name' });
 
 };
 
 // POST User create resource action
-exports.create = function(req, res) {
+exports.create = function(req, res, next) {
 
   // Receive body user
   var user = new User(req.body);
-  user.password = bcryptjs.hashSync(user.password, 8);
+  if (user.password)
+    user.password = bcryptjs.hashSync(user.password, 8);
+  
+  // Import model to find video this description
   var Role = require('../models/role');
-  var _role;
 
-  var promise = Role.findOne({ 'name': 'user' }, function (err, role) {
-    if (err) return console.log(err);
-    user.roles.push(role);
-    role.users.push(user);
-    _role = role;
-  }).exec();
+  // Find Role by id on MongoDB
+  return new Promise(function(resolve) {
+    Role.findOne({ 'name': 'user' }, function (err, role) {
+      // returns error if user was not found
+      if (user === undefined || user === null)
+        return errors.notFound('The user was not found', next);
+      // returns in error case
+      if (err) return errors.dbError(err, next);
 
-  promise.then(function () {
-    // Save user on MongoDB
-    user.save(function(err) {
-      // returns error when can not save user
-      if (err) return console.log(err);
-      // returns json when save user
-      res.json(user);
+      user.roles.push(role);
+      resolve(user);
+
     });
+
   })
-  .then(function () {
-    // Save user on MongoDB
-    Role.update({_id : _role._id}, _role, function(err) {
-      if (err) return console.log(err);
-    });
+    // When promise is ready
+    .then(function(user) {
+      // Save user on MongoDB
+      user.save(function(err, user) {
+        // returns in error case
+        if (err) return errors.dbError(err, next);
+        // returns json when save user
+        res.json(user);
+      });
   });
+
 };
 
 // PUT User update resource action
-exports.update = function(req, res) {
+exports.update = function(req, res, next) {
 
   // Receive param id
-  var id = req.params.id;
-
-  // Receive body user
-  var body = req.body;
+  var user_id = req.params.user_id;
 
   // Find user by id
-  return User.findById(id, function (err, user) {
-    if (!err) {
+  return User.findById(user_id, function (err, user) {
+    // returns error if user was not found
+    if (user === undefined || user === null)
+      return errors.notFound('The user was not found', next);
+    // returns in error case
+    if (err) return errors.dbError(err, next);
 
-      // Validate presence of fields
-      user.name = body.name || user.name;
-      user.email = body.email || user.email;
+    // Receive body role
+    user.name = req.body.name ? req.body.name : user.name;
+    user.email = req.body.email ? req.body.email : user.email;
+    user.password = req.body.password ? req.body.password : user.password;
 
-      // Validate password field
-      if(body.password){
-        user.password = bcryptjs.hashSync(body.password, 8);
-      }
+    // Validate password field
+    if(req.body.password) user.password = bcryptjs.hashSync(req.body.password, 8);
 
-      // Update user on MongoDB
-      user.update({
-        name : user.name,
-        email : user.email,
-        password : user.password
-      }, function (err) {
-        if (!err) {
-
-          // returns json when update user
-          res.json(user);
-
-        } else {
-          // returns error when can not update user
-          return console.log(err);
-        }
-      });
-
-    } else {
-      // returns error when can not find id of user
-      return console.log(err);
-    }
+    // Update user on MongoDB
+    user.save(function (err, user) {
+      // returns in error case
+      if (err) return errors.dbError(err, next);
+      // returns json when update user
+      res.json(user);
+    });
 
   });
 
 };
 
 // DELETE User remove resource action
-exports.remove = function(req, res) {
+exports.remove = function(req, res, next) {
 
   // Receive param id
-  var id = req.params.id;
+  var user_id = req.params.user_id;
 
   // Find user by id
-  var promise = User.getRoles(id);
-  promise.then(function (user) {
+  return User.findById(user_id, function (err, user) {
+    // returns error if user was not found
+    if (user === undefined || user === null)
+      return errors.notFound('The user was not found', next);
+    // returns in error case
+    if (err) return errors.dbError(err, next);
+
     // Remove user on MongoDB
     user.remove(function (err) {
-      // returns error when can not save user
-      if (err) return console.log(err);
+      // returns in error case
+      if (err) return errors.dbError(err, next);
       // returns json when remove user
       res.json({message : 'deleted', item : user});
     });
-    return user;
-  })
-  .then(function (user) {
-    var Role = require('../models/role');
-    user.roles.forEach(function (role_id) {
-      // Save user on MongoDB
-      var promise = Role.findById(role_id).exec();
-      promise.then(function (role) {
-        role.users.pull(user._id);
-        role.save(function (err) {
-          // returns error when can not save user
-          if (err) return console.log(err);
-        });
-      });
 
-    });
   });
-
 
 };

@@ -28,16 +28,9 @@ userSchema.plugin(uniqueValidator);
  */
 
 // Return roles from user
-userSchema.statics.getRoles = function getRoles(id) {
-
+userSchema.statics.getRoles = function(id) {
   if (!mongoose.Types.ObjectId.isValid(id)) return error.typeError('ObjectId is not valid', next);
-
-  return this.findOne({ _id: id })
-    .populate('roles', 'name') // only return the Roles name
-    .exec(function (err, user) {
-      if (err) return console.log(err);
-      console.log('The roles is %s', user.roles);
-    });
+  return this.findOne({ _id: id }).populate('roles', 'name');
 };
 
 /*

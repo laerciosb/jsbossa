@@ -1,13 +1,13 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "script_generation_tool API",
-    "description": "Script generation tool for GTAD project",
+    "title": "JSBossa",
+    "description": "JSBossa Project",
     "version": "1.0.0",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
-      "name": "LAViD Team",
-      "email": "contato@lavid.ufpb.br",
+      "name": "LaércioSB",
+      "email": "laerciosouza@lavid.ufpb.br",
       "url": "http://lavid.ufpb.br"
     },
     "license": {
@@ -27,20 +27,20 @@
     "application/json"
   ],
   "paths": {
-    "/projects": {
+    "/roles": {
       "get": {
         "tags": [
-          "Project"
+          "Role"
         ],
-        "summary": "Retrieve all projects",
-        "description": "This resource returns information about the `GTAD projects`. The response includes the display\ntitle and author each project, and lists the projects in the proper display order.\n",
+        "summary": "Retrieve all roles",
+        "description": "This resource returns information about the `JSBossa roles`. The response includes the display\nname each role, and lists the roles in the proper display order.\n",
         "responses": {
           "200": {
-            "description": "An array of projects",
+            "description": "An array of roles",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Project"
+                "$ref": "#/definitions/Role"
               }
             }
           }
@@ -48,643 +48,108 @@
       },
       "post": {
         "tags": [
-          "Project"
+          "Role"
         ],
-        "summary": "Add an new project",
-        "description": "This resource add a new `project`.",
+        "summary": "Add an new role",
+        "description": "This resource add a new `role`.",
         "parameters": [
           {
             "in": "body",
-            "name": "Project",
-            "description": "Project Object",
+            "name": "Role",
+            "description": "Role Object",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/ProjectBodyPost"
+              "$ref": "#/definitions/RoleBodyPost"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "An `project` object",
+            "description": "An `role` object",
             "schema": {
-              "$ref": "#/definitions/Project"
+              "$ref": "#/definitions/Role"
             }
           }
         }
       }
     },
-    "/projects/{projectId}": {
+    "/roles/{roleId}": {
       "get": {
         "tags": [
-          "Project"
+          "Role"
         ],
-        "summary": "Retrieve an project",
-        "description": "This resource retrieve a existing `project`.",
+        "summary": "Retrieve an role",
+        "description": "This resource retrieve a existing `role`.",
         "parameters": [
           {
             "in": "path",
-            "name": "projectId",
-            "description": "Project ID that needs to be fetched",
+            "name": "roleId",
+            "description": "Role ID that needs to be fetched",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "An `project` object",
+            "description": "An `role` object",
             "schema": {
-              "$ref": "#/definitions/Project"
+              "$ref": "#/definitions/Role"
             }
           }
         }
       },
       "put": {
         "tags": [
-          "Project"
+          "Role"
         ],
-        "summary": "Update an project",
-        "description": "This resource update a existing `project`.",
+        "summary": "Update an role",
+        "description": "This resource update a existing `role`.",
         "parameters": [
           {
             "in": "path",
-            "name": "projectId",
-            "description": "Project ID that needs to be fetched",
+            "name": "roleId",
+            "description": "Role ID that needs to be fetched",
             "required": true,
             "type": "string"
           }, {
             "in": "body",
-            "name": "Project",
-            "description": "Project Object",
+            "name": "Role",
+            "description": "Role Object",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/ProjectBodyPut"
+              "$ref": "#/definitions/RoleBodyPut"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "An `project` object",
+            "description": "An `role` object",
             "schema": {
-              "$ref": "#/definitions/Project"
+              "$ref": "#/definitions/Role"
             }
           }
         }
       },
       "delete": {
         "tags": [
-          "Project"
+          "Role"
         ],
-        "summary": "Remove an project",
-        "description": "This resource remove a existing `project`.",
+        "summary": "Remove an role",
+        "description": "This resource remove a existing `role`.",
         "parameters": [
           {
             "in": "path",
-            "name": "projectId",
-            "description": "Project ID that needs to be fetched",
+            "name": "roleId",
+            "description": "Role ID that needs to be fetched",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "An `project` object",
+            "description": "An `role` object",
             "schema": {
-              "$ref": "#/definitions/Project"
-            }
-          }
-        }
-      }
-    },
-    "/scripts": {
-      "get": {
-        "tags": [
-          "Script"
-        ],
-        "summary": "List Scripts",
-        "description": "The Scripts endpoint returns information about the GTAD scripts. The response includes the display\npath, project and other details each script, and lists the scripts in the proper display order.\n",
-        "responses": {
-          "200": {
-            "description": "An array of scripts",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Script"
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Script"
-        ],
-        "summary": "Add an new script",
-        "description": "This resource add a new `script` from a existing project.",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "Project",
-            "description": "Script Object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ScriptBodyPost"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `script` object",
-            "schema": {
-              "$ref": "#/definitions/Script"
-            }
-          }
-        }
-      }
-    },
-    "/scripts/{scriptId}": {
-      "get": {
-        "tags": [
-          "Script"
-        ],
-        "summary": "Retrieve an script",
-        "description": "This resource retrieve a existing `script`.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "scriptId",
-            "description": "Script ID that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `script` object",
-            "schema": {
-              "$ref": "#/definitions/Script"
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Script"
-        ],
-        "summary": "Update an script",
-        "description": "This resource update a existing `script`.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "scriptId",
-            "description": "Script ID that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }, {
-            "in": "body",
-            "name": "Script",
-            "description": "Script Object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ScriptBodyPut"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `script` object",
-            "schema": {
-              "$ref": "#/definitions/Script"
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Script"
-        ],
-        "summary": "Remove an script",
-        "description": "This resource remove a existing `script`.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "scriptId",
-            "description": "Script ID that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `script` object",
-            "schema": {
-              "$ref": "#/definitions/Script"
-            }
-          }
-        }
-      }
-    },
-    "/videos": {
-      "get": {
-        "tags": [
-          "Video"
-        ],
-        "summary": "List Videos",
-        "description": "The Videos endpoint returns information about the GTAD videos. The response includes the display\npath, project and other details each video, and lists the videos in the proper display order.\n",
-        "responses": {
-          "200": {
-            "description": "An array of videos",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Video"
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Video"
-        ],
-        "summary": "Add an new video",
-        "description": "This resource add a new `video` from a existing project.",
-        "parameters": [
-          {
-            "in": "formData",
-            "name": "project",
-            "type": "string",
-            "description": "Video Project value",
-            "required": true
-          }, {
-            "in": "formData",
-            "name": "action",
-            "type": "string",
-            "description": "Video Action value",
-            "required": true
-          }, {
-            "in": "formData",
-            "name": "video",
-            "description": "Video file",
-            "type": "file",
-            "required": true
-          }, {
-            "in": "formData",
-            "name": "subtitle",
-            "description": "Subtitle file",
-            "type": "file",
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `video` object",
-            "schema": {
-              "$ref": "#/definitions/Video"
-            }
-          }
-        }
-      }
-    },
-    "/videos/{videoId}": {
-      "get": {
-        "tags": [
-          "Video"
-        ],
-        "summary": "Retrieve an video",
-        "description": "This resource retrieve a existing `video`.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "videoId",
-            "description": "Video ID that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `video` object",
-            "schema": {
-              "$ref": "#/definitions/Video"
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Video"
-        ],
-        "summary": "Update an video",
-        "description": "This resource update a existing `video`.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "videoId",
-            "description": "Video ID that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }, {
-            "in": "formData",
-            "name": "action",
-            "type": "string",
-            "description": "Video Action value",
-            "required": true
-          }, {
-            "in": "formData",
-            "name": "video",
-            "description": "Video file",
-            "type": "file",
-            "required": false
-          }, {
-            "in": "formData",
-            "name": "subtitle",
-            "description": "Subtitle file",
-            "type": "file",
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `video` object",
-            "schema": {
-              "$ref": "#/definitions/Video"
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Video"
-        ],
-        "summary": "Remove an video",
-        "description": "This resource remove a existing `video`.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "videoId",
-            "description": "Video ID that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `video` object",
-            "schema": {
-              "$ref": "#/definitions/Video"
-            }
-          }
-        }
-      }
-    },
-    "/script_ads": {
-      "get": {
-        "tags": [
-          "ScriptAd"
-        ],
-        "summary": "List ScriptAds",
-        "description": "The ScriptAds endpoint returns information about the GTAD scriptAds. The response includes the display\npath, project, video and other details each scriptAd, and lists the scriptAds in the proper display order.\n",
-        "responses": {
-          "200": {
-            "description": "An array of scriptAds",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/ScriptAd"
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "ScriptAd"
-        ],
-        "summary": "Add an new scriptAd",
-        "description": "This resource add a new `scriptAd` from a existing project.",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "Project",
-            "description": "ScriptAd Object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ScriptAdBodyPost"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `scriptAd` object",
-            "schema": {
-              "$ref": "#/definitions/ScriptAd"
-            }
-          }
-        }
-      }
-    },
-    "/script_ads/{scriptAdId}": {
-      "get": {
-        "tags": [
-          "ScriptAd"
-        ],
-        "summary": "Retrieve an scriptAd",
-        "description": "This resource retrieve a existing `scriptAd`.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "scriptAdId",
-            "description": "ScriptAd ID that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `scriptAd` object",
-            "schema": {
-              "$ref": "#/definitions/ScriptAd"
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "ScriptAd"
-        ],
-        "summary": "Update an scriptAd",
-        "description": "This resource update a existing `scriptAd`.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "scriptAdId",
-            "description": "ScriptAd ID that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }, {
-            "in": "body",
-            "name": "ScriptAd",
-            "description": "ScriptAd Object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ScriptAdBodyPut"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `scriptAd` object",
-            "schema": {
-              "$ref": "#/definitions/ScriptAd"
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "ScriptAd"
-        ],
-        "summary": "Remove an scriptAd",
-        "description": "This resource remove a existing `scriptAd`.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "scriptAdId",
-            "description": "ScriptAd ID that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `scriptAd` object",
-            "schema": {
-              "$ref": "#/definitions/ScriptAd"
-            }
-          }
-        }
-      }
-    },
-    "/contents": {
-      "get": {
-        "tags": [
-          "Content"
-        ],
-        "summary": "List Contents",
-        "description": "The Contents endpoint returns information about the GTAD contents. The response includes the display\npath, project and other details each content, and lists the contents in the proper display order.\n",
-        "responses": {
-          "200": {
-            "description": "An array of contents",
-            "schema": {
-              "$ref": "#/definitions/Content"
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Content"
-        ],
-        "summary": "Add an new content",
-        "description": "This resource add a new `content`.",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "Content",
-            "description": "Content Object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ContentBodyPost"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `content` object",
-            "schema": {
-              "$ref": "#/definitions/Content"
-            }
-          }
-        }
-      }
-    },
-    "/contents/{contentId}": {
-      "get": {
-        "tags": [
-          "Content"
-        ],
-        "summary": "Retrieve an content",
-        "description": "This resource retrieve a existing `content`.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "contentId",
-            "description": "Content ID that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `content` object",
-            "schema": {
-              "$ref": "#/definitions/Content"
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Content"
-        ],
-        "summary": "Update an content",
-        "description": "This resource update a existing `content`.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "contentId",
-            "description": "Content ID that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }, {
-            "in": "body",
-            "name": "Content",
-            "description": "Content Object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ContentBodyPut"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `content` object",
-            "schema": {
-              "$ref": "#/definitions/Content"
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Content"
-        ],
-        "summary": "Remove an content",
-        "description": "This resource remove a existing `content`.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "contentId",
-            "description": "Content ID that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An `content` object",
-            "schema": {
-              "$ref": "#/definitions/Content"
+              "$ref": "#/definitions/Role"
             }
           }
         }
@@ -692,478 +157,58 @@
     }
   },
   "definitions": {
-    "ProjectBodyPost": {
+    "RoleBodyPost": {
       "properties": {
-        "title": {
+        "name": {
           "type": "string",
-          "example": "Raça, Amor e Paixão",
-          "description": "Project Title"
-        },
-        "author": {
-          "type": "string",
-          "example": "Sandro Meira",
-          "description": "Project Author"
+          "example": "expert",
+          "description": "Role Title"
         }
       },
       "required": [
-        "title",
-        "author"
+        "name"
       ]
     },
-    "ProjectBodyPut": {
+    "RoleBodyPut": {
       "properties": {
-        "title": {
+        "name": {
           "type": "string",
-          "example": "Raça, Amor e Paixão",
-          "description": "Project Title"
+          "example": "moderator",
+          "description": "Role Title"
         }
       },
       "required": [
-        "title"
+        "name"
       ]
     },
-    "Project": {
+    "Role": {
       "properties": {
         "_id": {
           "type": "string",
           "example": "58023182ef8a77200be9c7d6",
           "description": "Database Unique ID"
         },
-        "title": {
+        "name": {
           "type": "string",
-          "example": "Raça, Amor e Paixão",
-          "description": "Project Title"
-        },
-        "author": {
-          "type": "string",
-          "example": "Sandro Meira",
-          "description": "Project Author"
-        },
-        "shortname": {
-          "type": "string",
-          "example": "HkjtL3yJx",
-          "description": "Request Unique ID"
-        },
-        "script": {
-          "type": "string",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Script Unique ID or Object"
-        },
-        "video": {
-          "type": "string",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Video Unique ID or Object"
-        },
-        "script_ad": {
-          "type": "string",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "ScriptAd Unique ID or Object"
-        },
-        "content": {
-          "type": "string",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Content Unique ID or Object"
+          "example": "admin",
+          "description": "Role Title"
         },
         "created_at": {
           "type": "string",
           "format": "date-time",
           "example": "2016-10-15T13:39:14.886Z",
-          "description": "Date-time of Created Project"
+          "description": "Date-time of Created Role"
         },
         "updated_at": {
           "type": "string",
           "format": "date-time",
           "example": "2016-10-15T13:52:45.582Z",
-          "description": "Date-time of Updated Project"
+          "description": "Date-time of Updated Role"
         }
       },
       "required": [
         "_id",
-        "title",
-        "author",
-        "shortname",
-        "created_at",
-        "updated_at"
-      ]
-    },
-    "ScriptBodyPost": {
-      "properties": {
-        "project": {
-          "type": "string",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Existing Project ID"
-        },
-        "data": {
-          "type": "string",
-          "example": "[CENA] Cena 1 - Lavid - INTERIOR - dia\n[AÇÃO] Assim que Laercio entra no Lavid, Danilo o questiona.\n[PERSONAGEM] DANILO\n[DIÁLOGO] Laercio, cade a cota do cafe?\n[AÇÃO] Laercio fica surpreso. Ele responde.\n[PERSONAGEM] LAERCIO\n[DIÁLOGO] Eu ja transferi para tua conta.\n[AÇÃO] Danilo fica satisfeito e volta da trabalhar.\n\n[CENA] Cena 2 - Lavid - EXTERIOR - dia\n[AÇÃO] Ao sair do lavid, Danilo consulta a sua conta e fala.\n[PERSONAGEM] DANILO\n[DIÁLOGO] Oush?! Laercio não transferiu o dinheiro?! Vou pegar essa\ncara!\n[AÇÃO] Danilo volta para o Lavid correndo.\n\n[CENA] Cena 3 - Lavid - INTERIOR - dia\n[AÇÃO] De volta ao lavid, Danilo grita.\n[PERSONAGEM] DANILO\n[DIÁLOGO] Laercio, cade a cota do cafe?!\n[AÇÃO] Laercio está tomando um copo de café. Percebe o perigo e corre.",
-          "description": "Script Data is following the format created by LAViD Team."
-        },
-        "action": {
-          "type": "string",
-          "example": "save",
-          "description": "Script Action informs to api the action request from client."
-        }
-      },
-      "required": [
-        "project",
-        "data",
-        "action"
-      ]
-    },
-    "ScriptBodyPut": {
-      "properties": {
-        "data": {
-          "type": "string",
-          "example": "{'generator':'gtad','version':'1.0.0','language':'pt-br','encoded':'UTF-8','date':'Fri, 21 Oct 2016 18:09:59 GMT','data':{'scenes':[{'title':'Cena 1 - Lavid - INTERIOR - dia','actions':[{'description':'Assim que Laercio entra no Lavid, Danilo o questiona.','dialog':[{'character':'DANILO','text':'Laercio, cade a cota do cafe?'}]},{'description':'Laercio fica surpreso. Ele responde.','dialog':[{'character':'LAERCIO','text':'Eu ja transferi para tua conta.'}]},{'description':'Danilo fica satisfeito e volta da trabalhar.','dialog':[]}]},{'title':'Cena 2 - Lavid - EXTERIOR - dia','actions':[{'description':'Ao sair do lavid, Danilo consulta a sua conta e fala.','dialog':[{'character':'DANILO','text':'Oush?! Laercio não transferiu o dinheiro?! Vou pegar essa cara!'}]},{'description':'Danilo volta para o Lavid correndo.','dialog':[]}]},{'title':'Cena 3 - Lavid - INTERIOR - dia','actions':[{'description':'De volta ao lavid, Danilo grita.','dialog':[{'character':'DANILO','text':'Laercio, cade a cota do cafe?!'}]},{'description':'Laercio está tomando um copo de café. Percebe o perigo e corre.','dialog':[]}]}]}}",
-          "description": "Script Data is following the format created by LAViD Team."
-        },
-        "action": {
-          "type": "string",
-          "example": "finalize",
-          "description": "Script Action informs to api the action request from client."
-        }
-      },
-      "required": [
-        "data",
-        "action"
-      ]
-    },
-    "Script": {
-      "properties": {
-        "_id": {
-          "type": "string",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Database Unique ID"
-        },
-        "path": {
-          "type": "string",
-          "example": "HkjtL3yJx/script/HkjtL3yJx.txt",
-          "description": "Path to Script File"
-        },
-        "shortname": {
-          "type": "string",
-          "example": "HkjtL3yJx",
-          "description": "Request Unique ID"
-        },
-        "status": {
-          "type": "string",
-          "example": "Finalizado",
-          "description": "Status With Situation Of Script In Database"
-        },
-        "action": {
-          "type": "string",
-          "example": "finalize",
-          "description": "Action Required By User"
-        },
-        "project": {
-          "$ref": "#/definitions/Project",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Project Unique ID or Object"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2016-10-15T13:39:14.886Z",
-          "description": "Date-time of Created Project"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2016-10-15T13:52:45.582Z",
-          "description": "Date-time of Updated Project"
-        }
-      },
-      "required": [
-        "_id",
-        "path",
-        "shortname",
-        "status",
-        "action",
-        "project",
-        "created_at",
-        "updated_at"
-      ]
-    },
-    "Video": {
-      "properties": {
-        "_id": {
-          "type": "string",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Database Unique ID"
-        },
-        "filename": {
-          "type": "string",
-          "example": "video.mp4",
-          "description": "Filename Video After Upload"
-        },
-        "filetype": {
-          "type": "string",
-          "example": "video/mp4",
-          "description": "Filetype Video After Upload"
-        },
-        "subtitle": {
-          "type": "string",
-          "example": "HkjtL3yJx/video/subtitle.srt",
-          "description": "Path to Video Subtitle"
-        },
-        "path": {
-          "type": "string",
-          "example": "HkjtL3yJx/video/video.mp4",
-          "description": "Path to Video File"
-        },
-        "shortname": {
-          "type": "string",
-          "example": "HkjtL3yJx",
-          "description": "Request Unique ID"
-        },
-        "status": {
-          "type": "string",
-          "example": "Finalizado",
-          "description": "Status With Situation Of Script In Database"
-        },
-        "action": {
-          "type": "string",
-          "example": "finalize",
-          "description": "Action Required By User"
-        },
-        "project": {
-          "$ref": "#/definitions/Project",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Project Unique ID or Object"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2016-10-15T13:39:14.886Z",
-          "description": "Date-time of Created Project"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2016-10-15T13:52:45.582Z",
-          "description": "Date-time of Updated Project"
-        }
-      },
-      "required": [
-        "_id",
-        "filename",
-        "filetype",
-        "path",
-        "shortname",
-        "status",
-        "action",
-        "project",
-        "created_at",
-        "updated_at"
-      ]
-    },
-    "ScriptAdBodyPost": {
-      "properties": {
-        "project": {
-          "type": "string",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Existing Project ID"
-        },
-        "data": {
-          "type": "string",
-          "example": "[{'begin':'00:01:06,400','end':'00:01:07,800','duration':1.3999999999999915,'text':'Nem mesmo eu posso estar','$$hashKey':'object:102'},{'begin':'00:01:07,900','end':'00:01:09,800','duration':1.8999999999999915,'text':'Em todos os lugares ao mesmo tempo','$$hashKey':'object:103'},{'begin':'00:01:09,900','end':'00:01:12,000','duration':2.0999999999999943,'text':'Por favor, deixe o seu recado depois do sinal','$$hashKey':'object:104'},{'begin':'00:01:18,700','end':'00:01:20,000','duration':1.2999999999999972,'text':'Aqui é a Marília.','$$hashKey':'object:105'},{'begin':'00:01:20,700','end':'00:01:21,900','duration':1.2000000000000028,'text':'Não sei por que que eu parei','$$hashKey':'object:106'},{'begin':'00:01:22,000','end':'00:01:23,500','duration':1.5,'text':'aqui pra deixar este recado','$$hashKey':'object:107'},{'begin':'00:01:24,000','end':'00:01:25,600','duration':1.5999999999999943,'text':'Eu tenho mania de deixar recado','$$hashKey':'object:108'},{'begin':'00:01:26,800','end':'00:01:28,000','duration':1.2000000000000028,'text':'Sempre tive','$$hashKey':'object:109'},{'begin':'00:01:29,300','end':'00:01:30,500','duration':1.2000000000000028,'text':'Também não sei pra quê.','$$hashKey':'object:110'},{'begin':'00:01:31,000','end':'00:01:32,000','duration':1,'text':'Ninguém lê.','$$hashKey':'object:111'},{'begin':'00:01:33,000','end':'00:01:34,500','duration':1.5,'text':'Tu nunca lê.','$$hashKey':'object:112'},{'begin':'00:01:35,800','end':'00:01:37,600','duration':1.7999999999999972,'text':'Mas hoje tu vai me ouvir.','$$hashKey':'object:113'},{'begin':'00:01:41,000','end':'00:01:42,900','duration':1.9000000000000057,'text':'A essa hora eu já devo estar longe.','$$hashKey':'object:114'},{'begin':'00:01:43,700','end':'00:01:45,000','duration':1.2999999999999972,'text':'Não adianta me procurar.','$$hashKey':'object:115'},{'begin':'00:01:45,100','end':'00:01:47,000','duration':1.9000000000000057,'text':'Vão dizer que eu fiquei louca,','$$hashKey':'object:116'},{'begin':'00:01:47,100','end':'00:01:48,400','duration':1.3000000000000114,'text':'que eu perdi a cabeça.','$$hashKey':'object:117'},{'begin':'00:01:48,500','end':'00:01:49,800','duration':1.2999999999999972,'text':'Mas não faz mal.','$$hashKey':'object:118'},{'begin':'00:01:50,700','end':'00:01:51,600','duration':0.8999999999999915,'text':'Pode ser que agora','$$hashKey':'object:119'},{'begin':'00:01:51,700','end':'00:01:53,200','duration':1.5,'text':'eu dê um jeito na minha vida.','$$hashKey':'object:120'},{'begin':'00:01:54,100','end':'00:01:55,400','duration':1.3000000000000114,'text':'Eu estou levando só o dinheiro que','$$hashKey':'object:121'},{'begin':'00:01:55,500','end':'00:01:57,500','duration':2,'text':'minha mãe mandou e a minha bolsa.','$$hashKey':'object:122'},{'begin':'00:01:57,600','end':'00:01:58,600','duration':1,'text':'Não quero nada teu.','$$hashKey':'object:123'},{'begin':'00:02:00,400','end':'00:02:01,800','duration':1.3999999999999915,'text':'Não foi nada planejado.','$$hashKey':'object:124'},{'begin':'00:02:02,500','end':'00:02:03,900','duration':1.4000000000000057,'text':'Eu tava fazendo o almoço.','$$hashKey':'object:125'},{'begin':'00:02:04,400','end':'00:02:08,000','duration':3.5999999999999943,'text':'Não sabia se eu cozinhava um ou dois pedaços de galinha.','$$hashKey':'object:126'},{'begin':'00:02:08,800','end':'00:02:09,800','duration':1,'text':'E aí eu decidi.','$$hashKey':'object:127'},{'begin':'00:02:11,000','end':'00:02:13,100','duration':2.0999999999999943,'text':'Essas coisas a gente decide assim,','$$hashKey':'object:128'},{'begin':'00:02:13,400','end':'00:02:14,300','duration':0.9000000000000057,'text':'Eu acho.','$$hashKey':'object:129'},{'begin':'00:02:15,900','end':'00:02:17,900','duration':2,'text':'Eu tinha que ter ficado na minha cidade,','$$hashKey':'object:130'},{'begin':'00:02:18,600','end':'00:02:20,600','duration':2,'text':'ter casado com alguém parecido comigo.','$$hashKey':'object:131'},{'begin':'00:02:21,900','end':'00:02:23,400','duration':1.5,'text':'tu era tão bonito.','$$hashKey':'object:132'},{'begin':'00:02:24,200','end':'00:02:27,400','duration':3.200000000000017,'text':'Tão...diferente de todo mundo que eu conhecia','$$hashKey':'object:133'},{'begin':'00:02:29,700','end':'00:02:31,100','duration':1.4000000000000057,'text':'Eu queria ter a minha casa.','$$hashKey':'object:134'},{'begin':'00:02:31,300','end':'00:02:33,900','duration':2.5999999999999943,'text':'Uma casa de verdade, de alvenaria.','$$hashKey':'object:135'},{'begin':'00:02:34,100','end':'00:02:36,600','duration':2.5,'text':'Com quarto, sala, cozinha.','$$hashKey':'object:136'},{'begin':'00:02:37,700','end':'00:02:38,500','duration':0.8000000000000114,'text':'Eu só queria isso.','$$hashKey':'object:137'},{'begin':'00:02:40,300','end':'00:02:42,300','duration':2,'text':'Tu sempre diz que isso é bobagem,','$$hashKey':'object:138'},{'begin':'00:02:42,400','end':'00:02:43,400','duration':1,'text':'que isso é pro público.','$$hashKey':'object:139'},{'begin':'00:02:44,300','end':'00:02:46,600','duration':2.299999999999983,'text':'Mas eu quero ser que nem o público.','$$hashKey':'object:140'},{'begin':'00:02:47,200','end':'00:02:49,600','duration':2.4000000000000057,'text':'Será que é tão difícil de entender isso?','$$hashKey':'object:141'},{'begin':'00:02:50,800','end':'00:02:52,200','duration':1.3999999999999773,'text':'Será que é tão difícil entender','$$hashKey':'object:142'},{'begin':'00:02:52,300','end':'00:02:54,000','duration':1.6999999999999886,'text':'que eu só quero ter uma vida...','$$hashKey':'object:143'},{'begin':'00:02:57,500','end':'00:02:59,400','duration':1.9000000000000057,'text':'O que é que eu fiz da minha vida?','$$hashKey':'object:144'},{'begin':'00:04:41,900','end':'00:04:43,100','duration':1.2000000000000455,'text':'Nem mesmo eu posso estar','$$hashKey':'object:145'},{'begin':'00:04:43,200','end':'00:04:45,100','duration':1.900000000000034,'text':'em todos os lugares ao mesmo tempo.','$$hashKey':'object:146'},{'begin':'00:04:45,300','end':'00:04:47,600','duration':2.3000000000000114,'text':'Por favor, deixe o seu recado depois do sinal.','$$hashKey':'object:147'},{'begin':'00:04:49,850','end':'00:04:50,700','duration':0.8499999999999659,'text':'Marília, sou eu.','$$hashKey':'object:148'},{'begin':'00:04:52,000','end':'00:04:52,700','duration':0.6999999999999886,'text':'Marília?','$$hashKey':'object:149'},{'begin':'00:04:53,200','end':'00:04:55,800','duration':2.6000000000000227,'text':'Eu queria saber se tem algum recado pra mim.\n','$$hashKey':'object:150'}]",
-          "description": "Script Data is following the format created by LAViD Team."
-        },
-        "action": {
-          "type": "string",
-          "example": "save",
-          "description": "ScriptAd Action informs to api the action request from client."
-        }
-      },
-      "required": [
-        "project",
-        "data",
-        "action"
-      ]
-    },
-    "ScriptAdBodyPut": {
-      "properties": {
-        "data": {
-          "type": "string",
-          "example": "1\n00:00:31,000 --> 00:00:34,933\nMão feminina coloca uma ficha de telefone em um velho orelhão.\n\n2\n00:00:34,933 --> 00:00:38,866\nSom de telefone tocando.\n\n3\n00:00:38,866 --> 00:00:42,799\nAo lado da tevê há uma panela de vidro transparente sobre um pequeno\nfogão, aceso.\n\n4\n00:00:42,799 --> 00:00:46,732\nDentro da panela, água começando a ferver, e um ovo.\n\n5\n00:00:46,732 --> 00:00:50,665\nO telefone volta a tocar.\n\n6\n00:00:50,665 --> 00:00:54,598\nTodo o ambiente é muito compacto, apertado, quase uma miniatura de\ncozinha.\n\n7\n00:00:54,598 --> 00:00:58,531\nO telefone toca uma terceira vez.\n\n8\n00:00:58,531 --> 00:01:02,464\nPouco mais adiante, ao lado do balcão da cozinha, uma mesinha com um\ntelefone e uma secretaria eletrônica, modelo bem antigo.\n\n9\n00:01:02,464 --> 00:01:06,397\nO telefone toca pela quarta vez e, imediatamente, a secretária\neletrônica atende, com uma voz masculina.\n\n10\n00:01:12,000 --> 00:01:18,700\nSom do bip da secretária eletrônica, que começa a gravar a mensagem,\ncom voz de mulher.\n\n11\n00:02:27,400 --> 00:02:29,700\nAs cabeças no chão.\n\n12\n00:02:54,000 --> 00:02:57,500\nA porta do trailer está aberta.\n\n13\n00:02:59,400 --> 00:03:02,328\nRuído no telefone.\n\n14\n00:03:02,328 --> 00:03:05,256\nA uns vinte metros do trailer, um velho orelhão, agora vazio.\n\n15\n00:03:05,256 --> 00:03:08,184\nO telefone está pendurado, balançando.\n\n16\n00:03:08,184 --> 00:03:11,112\nEm volta do trailer e do orelhão, um terreno baldio, terra vermelha.\n\n17\n00:03:11,112 --> 00:03:14,040\nParada a poucos metros do orelhão, está MARÍLIA, 30 anos, loira, de\ncostas para o orelhão e para o trailer.\n\n18\n00:03:14,040 --> 00:03:16,968\nÉ a mesma mulher das fotos, um pouco mais velha.\n\n19\n00:03:16,968 --> 00:03:19,896\nTem  uma bolsa a tiracolo e um avental na mão, encobrindo o rosto.\n\n20\n00:03:19,896 --> 00:03:22,824\nMarília fica algum tempo assim, de cabeça baixa, os braços pendentes. \n\n21\n00:03:22,824 --> 00:03:25,752\nAtrás dela, o orelhão, o telefone pendurado.\n\n22\n00:03:25,752 --> 00:03:28,680\nAo fundo, o trailer.\n\n23\n00:03:28,680 --> 00:03:31,608\nDentro do trailer, o ovo ferve na panela de vidro.\n\n24\n00:03:31,608 --> 00:03:34,536\nDo lado de fora, Marília continua parada, de cabeça baixa, o trailer\nao fundo.\n\n25\n00:03:34,536 --> 00:03:37,464\n O ovo continua fervendo.\n\n26\n00:03:37,464 --> 00:03:40,392\nNa tevê, os correndores se aproximam do final da prova, bastões na\nmão.\n\n27\n00:03:40,392 --> 00:03:43,320\nMarília suspira, decidida.\n\n28\n00:03:43,320 --> 00:03:46,248\nLarga a bolsa no chão, com cuidado.\n\n29\n00:03:46,248 --> 00:03:49,176\nColoca o avental, enfiando-o pela cabeça.\n\n30\n00:03:49,176 --> 00:03:52,104\nO ovo rompe-se na panela.\n\n31\n00:03:52,104 --> 00:03:55,032\nMarília volta a pegar a bolsa.\n\n32\n00:03:55,032 --> 00:03:57,960\nLentamente, sem pressa, Marília pega o telefone e recoloca-o no\ngancho.\n\n33\n00:03:57,960 --> 00:04:00,888\nCom a outra mão, confere se a ficha foi devolvida.\n\n34\n00:04:00,888 --> 00:04:03,816\nMarília caminha lentamente em direção ao trailer, a bolsa a tiracolo.\n\n35\n00:04:03,816 --> 00:04:06,744\nMarília entra no trailer.\n\n36\n00:04:06,744 --> 00:04:09,672\nFecha a porta.\n\n37\n00:04:09,672 --> 00:04:12,600\nMão de Marília desliga a tevê.\n\n38\n00:04:12,600 --> 00:04:15,528\nMarília guarda um pacote de dinheiro numa caixa.\n\n39\n00:04:15,528 --> 00:04:18,456\nColoca a bolsa dentro do armário, fecha a porta.\n\n40\n00:04:18,456 --> 00:04:21,384\nAperta a tecla Rewind da secretária eletrônica.\n\n41\n00:04:21,384 --> 00:04:24,312\nA clara do ovo espalha-se pela água da panela.\n\n42\n00:04:24,312 --> 00:04:27,240\nA tevê, desligada, ainda fica com um pontinho luminoso no centro da\ntela.\n\n43\n00:04:27,240 --> 00:04:30,168\nO terreno, o orelhão, o trailer ao fundo, agora com a porta fechada.\n\n44\n00:04:30,168 --> 00:04:33,096\nSobre a imagem do trailer sobem os créditos finais.\n\n45\n00:04:33,096 --> 00:04:36,024\nSom do telefone tocando.\n\n46\n00:04:36,024 --> 00:04:38,952\nUma, duas, três, quatro vezes.\n\n47\n00:04:38,952 --> 00:04:41,880\nAinda sobre a imagem do trailer, a secretaria eletrônica atende, com\na mesma voz masvulina do início.\n\n48\n00:04:55,800 --> 00:05:42,031\nAinda sobre a imagem do trailer, ouvimos o telefone sendo desligado.",
-          "description": "Script Data is following the format created by LAViD Team."
-        },
-        "action": {
-          "type": "string",
-          "example": "finalize",
-          "description": "ScriptAd Action informs to api the action request from client."
-        }
-      },
-      "required": [
-        "data",
-        "action"
-      ]
-    },
-    "ScriptAd": {
-      "properties": {
-        "_id": {
-          "type": "string",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Database Unique ID"
-        },
-        "path": {
-          "type": "string",
-          "example": "HkjtL3yJx/script_ad/HkjtL3yJx.srt",
-          "description": "Path to ScriptAd File"
-        },
-        "shortname": {
-          "type": "string",
-          "example": "HkjtL3yJx",
-          "description": "Request Unique ID"
-        },
-        "status": {
-          "type": "string",
-          "example": "Finalizado",
-          "description": "Status With Situation Of Script In Database"
-        },
-        "action": {
-          "type": "string",
-          "example": "finalize",
-          "description": "Action Required By User"
-        },
-        "project": {
-          "$ref": "#/definitions/Project",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Project Unique ID or Object"
-        },
-        "video": {
-          "$ref": "#/definitions/Video",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Video Unique ID or Object"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2016-10-15T13:39:14.886Z",
-          "description": "Date-time of Created Project"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2016-10-15T13:52:45.582Z",
-          "description": "Date-time of Updated Project"
-        }
-      },
-      "required": [
-        "_id",
-        "path",
-        "shortname",
-        "status",
-        "action",
-        "project",
-        "video",
-        "created_at",
-        "updated_at"
-      ]
-    },
-    "ContentBodyPost": {
-      "properties": {
-        "project": {
-          "type": "string",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Existing Project ID"
-        },
-        "action": {
-          "type": "string",
-          "example": "save",
-          "description": "Content Action informs to api the action request from client."
-        }
-      },
-      "required": [
-        "project",
-        "action"
-      ]
-    },
-    "ContentBodyPut": {
-      "properties": {
-        "action": {
-          "type": "string",
-          "example": "finalize",
-          "description": "Content Action informs to api the action request from client."
-        }
-      },
-      "required": [
-        "action"
-      ]
-    },
-    "Content": {
-      "properties": {
-        "_id": {
-          "type": "string",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Database Unique ID"
-        },
-        "filetypes": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "example": [".mp3", ".mp4"],
-          "description": "Filetypes Generated From Content"
-        },
-        "path": {
-          "type": "string",
-          "example": "HkjtL3yJx/content/HkjtL3yJx",
-          "description": "Path to Content Files"
-        },
-        "shortname": {
-          "type": "string",
-          "example": "HkjtL3yJx",
-          "description": "Request Unique ID"
-        },
-        "status": {
-          "type": "string",
-          "example": "Finalizado",
-          "description": "Status With Situation Of Script In Database"
-        },
-        "action": {
-          "type": "string",
-          "example": "finalize",
-          "description": "Action Required By User"
-        },
-        "project": {
-          "$ref": "#/definitions/Project",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Project Unique ID or Object"
-        },
-        "video": {
-          "$ref": "#/definitions/Video",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "Video Unique ID or Object"
-        },
-        "script_ad": {
-          "$ref": "#/definitions/ScriptAd",
-          "example": "58023182ef8a77200be9c7d6",
-          "description": "ScriptAd Unique ID or Object"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2016-10-15T13:39:14.886Z",
-          "description": "Date-time of Created Project"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2016-10-15T13:52:45.582Z",
-          "description": "Date-time of Updated Project"
-        }
-      },
-      "required": [
-        "_id",
-        "filetypes",
-        "path",
-        "shortname",
-        "status",
-        "action",
-        "project",
-        "video",
-        "script_ad",
+        "name",
         "created_at",
         "updated_at"
       ]

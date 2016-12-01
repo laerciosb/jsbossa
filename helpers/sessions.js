@@ -10,7 +10,6 @@
 exports.authenticated = function(req, res, next) {
   if (req.isAuthenticated()) return next();
   // res.send(!!req.isAuthenticated());
-  // req.flash('error', 'Unauthorized');
   res.redirect(401,'/'); // Unauthorized
 };
 

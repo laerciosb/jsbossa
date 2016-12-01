@@ -20,3 +20,19 @@ exports.typeError = function(message, next) {
   err.status = settings.errors.unprocessableEntity;
   next(err);
 };
+
+// Error in database
+exports.dbError = function(dbInfo, next) {
+  var message = dbInfo.errors ? 
+    dbInfo.errors[Object.keys(dbInfo.errors)[0]].message : dbInfo.message;
+  var err = new Error(message || 'A problem was detected during the access to database.');
+  err.status = settings.errors.internalServerError;
+  next(err);
+};
+
+// Error when hurts business rule
+exports.businessRuleError = function(message, next) {
+  var err = new Error(message || 'Due to business rule the request cannot continue.');
+  err.status = settings.errors.unprocessableEntity;
+  next(err);
+};

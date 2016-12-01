@@ -8,148 +8,148 @@
 
 // Required model
 var Role = require('../models/role');
+var errors = require('../helpers/errors');
 
 // GET Roles resource action
-exports.index = function(req, res) {
+exports.index = function(req, res, next) {
 
-    // Find all roles on MongoDB
-    return Role.find(function (err, roles) {
-        if (!err) {
+  // Receive query
+  var query = {};
 
-            // returns json with all roles
-            res.json(roles);
+  var user = req.query.user;
+  if(user) query.user = user;
 
-        } else {
-            // returns error when can not find roles
-            return console.log(err);
-        }
-    });
+  // Find all roles on MongoDB
+  return Role.find(query, function (err, roles) {
+    // returns in error case
+    if (err) return errors.dbError(err, next);
+    // returns json when find roles
+    res.json(roles);
+  });
 
 };
 
 // GET Role show resource action
-exports.show = function(req, res) {
+exports.show = function(req, res, next) {
 
-    // Receive param id
-    var id = req.params.id;
+  // Receive param id
+  var role_id = req.params.role_id;
 
-    // Find role by id on MongoDB
-    return Role.findById(id, function (err, role) {
-        if (!err) {
-
-            // returns json when find a role
-            res.json(role);
-
-        } else {
-            // returns error when can not find role
-            return console.log(err);
-        }
-    });
+  // Find role by id on MongoDB
+  return Role.findById(role_id, function (err, role) {
+    // returns error if role was not found
+    if (role === undefined || role === null)
+      return errors.notFound('The role was not found', next);
+    // returns in error case
+    if (err) return errors.dbError(err, next);
+    // returns json when find roles
+    res.json(role);
+  });
 
 };
 
 // POST Role create resource action
-exports.create = function(req, res) {
+exports.create = function(req, res, next) {
 
-    // Receive body role
-    var role = new Role(req.body);
+  // Receive body role
+  var role = new Role(req.body);
 
-    // Save role on MongoDB
-    role.save(function(err) {
-        if (!err) {
-
-            // returns json when save role
-            res.json(role);
-
-        } else {
-            // returns error when can not save role
-            return console.log(err);
-        }
-    });
+  // Save role on MongoDB
+  role.save(function(err) {
+    // returns in error case
+    if (err) return errors.dbError(err, next);
+    // returns json when find roles
+    res.json(role);
+  });
 
 };
 
 // PUT Role update resource action
-exports.update = function(req, res) {
+exports.update = function(req, res, next) {
 
-    // Receive param id
-    var id = req.params.id;
+  // Receive param id
+  var role_id = req.params.role_id;
 
-    // Receive body role
-    var body = req.body;
+  // Find role by id
+  return Role.findById(role_id, function (err, role) {
+    // returns error if role was not found
+    if (role === undefined || role === null)
+      return errors.notFound('The role was not found', next);
+    // returns in error case
+    if (err) return errors.dbError(err, next);
+    
+    new Promise(function(resolve) {
+      // Get the protected roles that cannot be removed
+      resolve(Role.getProtectedRoles());
+    })
+      .then(function(protectedRoles) {
+        // Receive body role
+        role.name = req.body.name;
 
-    // Find role by id
-    return Role.findById(id, function (err, role) {
-        if (!err) {
+        var compareRole = JSON.stringify(role);
+        for (var i in protectedRoles) {
+          var compareI = JSON.stringify(protectedRoles[i]);
 
-            // Validate presence of fields
-            role.name = body.name || role.name;
+          // returns error if role is protected
+          if (compareRole === compareI)
+            return errors.businessRuleError('Sorry, this Role not should be updated', next);
 
-            // Update role on MongoDB
-            role.update({
-                name : role.name
-            }, function (err) {
-                if (!err) {
-
-                    // returns json when update role
-                    res.json(role);
-
-                } else {
-                    // returns error when can not update role
-                    return console.log(err);
-                }
-            });
-
-        } else {
-            // returns error when can not find id of role
-            return console.log(err);
         }
 
-    });
+        // Update role on MongoDB
+        role.save(function(err, role) {
+          // returns in error case
+          if (err) return errors.dbError(err, next);
+          // returns json when remove role
+          res.json(role);
+        });
+
+      });
+      
+  });
 
 };
 
 // DELETE Role remove resource action
-exports.remove = function(req, res) {
+exports.remove = function(req, res, next) {
 
-    // Receive param id
-    var id = req.params.id;
+  // Receive param id
+  var role_id = req.params.role_id;
 
-    var promise = Role.getSafeRoles();
-    promise.then(function (roles) {
-        if (roles.length != 0) {
-            roles.forEach(function (r) {
-                // Find role by id
-                if(r._id == id){
-                    return Role.findById(r._id, function (err, role) {
-                        if (!err) {
+  // Find role by id
+  return Role.findById(role_id, function (err, role) {
+    // returns error if role was not found
+    if (role === undefined || role === null)
+      return errors.notFound('The role was not found', next);
+    // returns in error case
+    if (err) return errors.dbError(err, next);
+    
+    new Promise(function(resolve) {
+      // Get the protected roles that cannot be removed
+      resolve(Role.getProtectedRoles());
+    })
+      .then(function(protectedRoles) {
+        var compareRole = JSON.stringify(role);
 
-                            // Remove role on MongoDB
-                            role.remove(function (err) {
-                                if (!err) {
+        for (var i in protectedRoles) {
+          var compareI = JSON.stringify(protectedRoles[i]);
 
-                                    // returns json when remove role
-                                    res.json({message : 'deleted', item : role});
-                                    return role;
+          // returns error if role is protected
+          if (compareRole === compareI)
+            return errors.businessRuleError('Sorry, this Role not should be deleted', next);
 
-                                } else {
-                                    // returns error when can not remove role
-                                    return console.log(err);
-                                }
-                            });
-
-                        } else {
-                            // returns error when can not find id of role
-                            return console.log(err);
-                        }
-
-                    });
-                }
-
-            })
-        } else {
-            res.json({message : 'Sorry, this Role not should be deleted.'})
         }
-    });
+
+        // Remove role on MongoDB
+        role.remove(function(err) {
+          // returns in error case
+          if (err) return errors.dbError(err, next);
+          // returns json when remove role
+          res.json({message : 'deleted', item : role});
+        });
+
+      });
+      
+  });
 
 };

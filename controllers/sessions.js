@@ -17,6 +17,6 @@ exports.logout = function(req, res) {
 
 // POST Google callback action
 exports.login = passport.authenticate('local', {
-  successRedirect : '/',
+  successRedirect : '/api/users',
   failureRedirect : '/'
 });

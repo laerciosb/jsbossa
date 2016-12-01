@@ -44,14 +44,24 @@ userSchema.statics.getRoles = function getRoles(id) {
  * Triggers
  */
 
+userSchema.pre('save', function(next) {
+  // Save user reference in role.
+  this.model('Role').update({ name: 'user' }, {$push: {users: this}}, next);
+});
+
+userSchema.pre('remove', function(next){
+  // Remove user reference in role.
+  this.model('Role').update({_id: {$in: this.roles}}, {$pull: {users: this._id}}, {multi: true}, next);
+});
+
 // userSchema.pre('save', function(next) {
 //   // Save user reference in project.
-//   this.model('Project').update({_id: this.project}, { $set: { user: this  }}, next);
+//   this.model('Project').update({_id: this.project}, {$set: {user: this}}, next);
 // });
 
 // userSchema.pre('remove', function(next) {
 //   // Remove user reference in project.
-//   this.model('Project').update({_id: this.project}, { $unset: { user: ""  }}, next);
+//   this.model('Project').update({_id: this.project}, {$unset: {user: ""}}, next);
 // });
 
 // Export Model for use into Controller

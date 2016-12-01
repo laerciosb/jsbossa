@@ -16,15 +16,15 @@ router
   .get('/', [sessionsHelper.authenticated, user.can('access users index')], usersController.index)
 
   /* GET User by ID for show the user. */
-  .get('/:id', [sessionsHelper.authenticated, user.can('access users show')], usersController.show)
+  .get('/:user_id', [sessionsHelper.authenticated, user.can('access users show')], usersController.show)
 
   /* POST User for create a user. */
   .post('/', usersController.create)
 
   /* PUT User by ID for update the user. */
-  .put('/:id', [sessionsHelper.authenticated, user.can('access users edit')], usersController.update)
+  .put('/:user_id', [sessionsHelper.authenticated, user.is('expert')], usersController.update)
 
   /* DELETE User by ID for remove the user. */
-  .delete('/:id', [sessionsHelper.authenticated, user.is('expert')], usersController.remove);
+  .delete('/:user_id', [sessionsHelper.authenticated, user.is('expert')], usersController.remove);
 
 module.exports = router;

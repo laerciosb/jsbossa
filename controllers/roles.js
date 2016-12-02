@@ -79,23 +79,16 @@ exports.update = function(req, res, next) {
     if (err) return errors.dbError(err, next);
     
     new Promise(function(resolve) {
-      // Get the protected roles that cannot be removed
-      resolve(Role.getProtectedRoles());
+      // Receive body role
+      role.name = req.body.name ? req.body.name : role.name;
+
+      // Verify if the role is protected
+      resolve(role.verifyRoleIsProtected());
     })
       // When promise is ready
-      .then(function(protectedRoles) {
-        // Receive body role
-        role.name = req.body.name ? req.body.name : role.name;
-
-        var compareRole = JSON.stringify(role);
-        for (var i in protectedRoles) {
-          var compareI = JSON.stringify(protectedRoles[i]);
-
-          // returns error if role is protected
-          if (compareRole === compareI)
-            return errors.businessRuleError('Sorry, this Role not should be updated', next);
-
-        }
+      .then(function(err) {
+        if (err)
+          return errors.businessRuleError('Sorry, this Role not should be updated', next);
 
         // Update role on MongoDB
         role.save(function(err, role) {
@@ -126,21 +119,13 @@ exports.remove = function(req, res, next) {
     if (err) return errors.dbError(err, next);
     
     new Promise(function(resolve) {
-      // Get the protected roles that cannot be removed
-      resolve(Role.getProtectedRoles());
+      // Verify if the role is protected
+      resolve(role.verifyRoleIsProtected());
     })
       // When promise is ready
-      .then(function(protectedRoles) {
-        var compareRole = JSON.stringify(role);
-
-        for (var i in protectedRoles) {
-          var compareI = JSON.stringify(protectedRoles[i]);
-
-          // returns error if role is protected
-          if (compareRole === compareI)
-            return errors.businessRuleError('Sorry, this Role not should be deleted', next);
-
-        }
+      .then(function(err) {
+        if (err)
+          return errors.businessRuleError('Sorry, this Role not should be removed', next);
 
         // Remove role on MongoDB
         role.remove(function(err) {

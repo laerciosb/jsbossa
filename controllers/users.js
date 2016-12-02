@@ -8,7 +8,6 @@
 
 // Required model
 var User = require('../models/user');
-var bcryptjs = require('bcryptjs');
 var errors = require('../helpers/errors');
 
 // GET Users resource action
@@ -56,18 +55,28 @@ exports.create = function(req, res, next) {
 
   // Receive body user
   var user = new User(req.body);
-  if (user.password)
-    user.password = bcryptjs.hashSync(user.password, 8);
   
   // Import model to find video this description
   var Role = require('../models/role');
 
   // Find Role by id on MongoDB
   return new Promise(function(resolve) {
+    // Role.getProtectedRoles(function (err, roles) {
+    //   // returns error if roles was not found
+    //   if (roles === undefined || roles === null)
+    //     return errors.notFound('The roles was not found', next);
+    //   // returns in error case
+    //   if (err) return errors.dbError(err, next);
+
+    //   user.roles = roles;
+    //   resolve(user);
+
+    // });
+
     Role.findOne({ 'name': 'user' }, function (err, role) {
-      // returns error if user was not found
-      if (user === undefined || user === null)
-        return errors.notFound('The user was not found', next);
+      // returns error if role was not found
+      if (role === undefined || role === null)
+        return errors.notFound('The role was not found', next);
       // returns in error case
       if (err) return errors.dbError(err, next);
 
@@ -108,9 +117,6 @@ exports.update = function(req, res, next) {
     user.name = req.body.name ? req.body.name : user.name;
     user.email = req.body.email ? req.body.email : user.email;
     user.password = req.body.password ? req.body.password : user.password;
-
-    // Validate password field
-    if(req.body.password) user.password = bcryptjs.hashSync(req.body.password, 8);
 
     // Update user on MongoDB
     user.save(function (err, user) {

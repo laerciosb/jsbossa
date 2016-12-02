@@ -10,7 +10,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var uniqueValidator = require('mongoose-unique-validator');
-var errors = require('../helpers/errors');
 
 // Schema
 var roleSchema = new Schema({
@@ -25,9 +24,16 @@ roleSchema.plugin(uniqueValidator);
  * Scopes
  */
 
+var protectedRoles = ["admin", "user"];
+
 // Return roles that can be removed from the user
 roleSchema.statics.getProtectedRoles = function(next) {
-  return this.find({name: {$in: ["admin", "user"]}}, next);
+  return this.find({name: {$in: protectedRoles}}, next);
+};
+
+// Verify if role is protected
+roleSchema.methods.verifyRoleIsProtected = function() {
+  return protectedRoles.indexOf(this.name.toLowerCase()) !== -1 ? true : null;
 };
 
 /*

@@ -26,6 +26,8 @@ Application test.
   - user@user:~/path_to_cloned_folder$ **npm start**
   - Access the browser http://localhost:3000
 
+**OBS: Is required create the roles 'admin', 'user' and 'expert' before create users.**
+
 
 ---
 
@@ -42,25 +44,25 @@ Application test.
 ### Auth ###
 |   Action                                 | Required          | Method    | URL                                               
 | -----------------------------------------|-------------------|-----------|----------------------------------------------------- 
-|   Sign in user (local authentication)    |                   |  `POST`   | /auth/login
+|   Sign in user (local authentication)    |                   |  `POST`   | /api/auth/login
 
 ### Users ###
 |   Action                                 | Required          | Method    | URL                                               
 | -----------------------------------------|-------------------|-----------|----------------------------------------------------- 
-|   List users                             | Auth and User     |  `GET`    | /users
-|   Create user                            | Auth and Expert   |  `POST`   | /users
-|   Read user                              | Auth and Expert   |  `GET`    | /users/:id
-|   Update user                            | Auth and Expert   |  `PUT`    | /users/:id
-|   Delete user                            | Auth and Expert   |  `DELETE` | /users/:id
+|   List users                             | Auth and User     |  `GET`    | /api/users
+|   Create user                            | Auth and Expert   |  `POST`   | /api/users
+|   Read user                              | Auth and Expert   |  `GET`    | /api/users/:id
+|   Update user                            | Auth and Expert   |  `PUT`    | /api/users/:id
+|   Delete user                            | Auth and Expert   |  `DELETE` | /api/users/:id
 
 ### Roles ###
 |   Action                                 | Required          | Method    | URL
 | -----------------------------------------|-------------------|-----------|-----------------------------------------------------
-|   List roles                             | Auth and Admin    |  `GET`    | /roles
-|   Create role                            | Auth and Admin    |  `POST`   | /roles
-|   Read role                              | Auth and Admin    |  `GET`    | /roles/:id
-|   Update role                            | Auth and Admin    |  `PUT`    | /roles/:id
-|   Delete role                            | Auth and Admin    |  `DELETE` | /roles/:id
+|   List roles                             | Auth and Admin    |  `GET`    | /api/roles
+|   Create role                            | Auth and Admin    |  `POST`   | /api/roles
+|   Read role                              | Auth and Admin    |  `GET`    | /api/roles/:id
+|   Update role                            | Auth and Admin    |  `PUT`    | /api/roles/:id
+|   Delete role                            | Auth and Admin    |  `DELETE` | /api/roles/:id
 
 ---
 

@@ -1,12 +1,12 @@
 // Author - Laércio S Bezerra | laerciosouza@lavid.ufpb.br
 
 /*
- * Role Model
+ * ROLE MODEL
  */
 
 "use strict";
 
-// Required lib
+// Required libs
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var uniqueValidator = require('mongoose-unique-validator');

@@ -1,15 +1,14 @@
 // Author - Laércio S Bezerra | laerciosouza@lavid.ufpb.br
 
 /*
- * App Settings
+ * APP SETTINGS
  */
 
 "use strict";
 
 var config = {};
 
-// Errors
-
+// Errors code settings
 config.errors = {
   unauthorized: 401,
   forbidden: 403,
@@ -23,6 +22,13 @@ config.errors = {
   internalServerError: 500,
   serviceUnavailable: 503,
   badGateway: 502
+};
+
+// JWT settings
+config.jwt = {
+  jwtSecret: "MyS3cr3tK3Y",
+  jwtSession: {session: false},
+  expiresIn: 10080 // In Seconds
 };
 
 module.exports = config;

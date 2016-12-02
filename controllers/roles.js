@@ -1,13 +1,15 @@
 // Author - Laércio S Bezerra | laerciosouza@lavid.ufpb.br
 
 /*
- * Roles Controller
+ * ROLES CONTROLLER
  */
 
 "use strict";
 
-// Required model
+// Required models
 var Role = require('../models/role');
+
+// Required utils
 var errors = require('../helpers/errors');
 
 // GET Roles resource action
@@ -39,7 +41,7 @@ exports.show = function(req, res, next) {
   return Role.findById(role_id, function (err, role) {
     // returns error if role was not found
     if (role === undefined || role === null)
-      return errors.notFound('The role was not found', next);
+      return errors.notFoundError('The role was not found', next);
     // returns in error case
     if (err) return errors.dbError(err, next);
     // returns json when find roles
@@ -74,7 +76,7 @@ exports.update = function(req, res, next) {
   return Role.findById(role_id, function (err, role) {
     // returns error if role was not found
     if (role === undefined || role === null)
-      return errors.notFound('The role was not found', next);
+      return errors.notFoundError('The role was not found', next);
     // returns in error case
     if (err) return errors.dbError(err, next);
     
@@ -114,7 +116,7 @@ exports.remove = function(req, res, next) {
   return Role.findById(role_id, function (err, role) {
     // returns error if role was not found
     if (role === undefined || role === null)
-      return errors.notFound('The role was not found', next);
+      return errors.notFoundError('The role was not found', next);
     // returns in error case
     if (err) return errors.dbError(err, next);
     

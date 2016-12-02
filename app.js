@@ -2,9 +2,9 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
+var routesVersioning = require('express-routes-versioning')();
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./docs/swagger.json');
@@ -13,10 +13,8 @@ var db = require('./config/db');
 var settings = require('./config/settings');
 var connectRoles = require('./config/connect_roles');
 var passport = require('./config/passport');
-var expressSession = require('express-session');
-var routesVersioning = require('express-routes-versioning')();
 
-var sessions = require('./routes/sessions');
+var auth = require('./routes/auth');
 var users = require('./routes/users');
 var roles = require('./routes/roles');
 
@@ -26,18 +24,10 @@ var app = express();
 //app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(expressValidator());
-app.use(expressSession({
-  secret: '3026e4356ecd343ce3f6b4d18e2b3316',
-  resave: true,
-  saveUninitialized: true
-}));
 app.use(passport.initialize());
-app.use(passport.session());
 app.use(connectRoles.middleware());
 
 // allow cross origin requests
@@ -56,7 +46,7 @@ app.use(function(req, res, next) {
 });
 
 // app.use('/api/videos', routesVersioning({"1.0.0" : videos, "2.0.0" : videosSub}));
-app.use('/api/auth', sessions);
+app.use('/api/auth', auth);
 app.use('/api/users', users);
 app.use('/api/roles', roles);
 
@@ -104,6 +94,5 @@ app.use(function(err, req, res) {
     error: err
   });
 });
-
 
 module.exports = app;

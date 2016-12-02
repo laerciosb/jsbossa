@@ -32,7 +32,7 @@ Application test.
 ## Lifecycle of application ##
 
 1. This application provides a CRUD users through API.
-2. User authentication local.
+2. User authentication by JWT(Json Web Token).
 3. User authorization access by actions and roles.
 
 ---
@@ -42,7 +42,6 @@ Application test.
 ### Auth ###
 |   Action                                 | Required          | Method    | URL                                               
 | -----------------------------------------|-------------------|-----------|----------------------------------------------------- 
-|   Sign out user                          | Auth and User     |  `GET`    | /auth/logout
 |   Sign in user (local authentication)    |                   |  `POST`   | /auth/login
 
 ### Users ###

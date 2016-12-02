@@ -1,13 +1,15 @@
 // Author - Laércio S Bezerra | laerciosouza@lavid.ufpb.br
 
 /*
- * Users Controller
+ * USERS CONTROLLER
  */
 
 "use strict";
 
-// Required model
+// Required models
 var User = require('../models/user');
+
+// Required utils
 var errors = require('../helpers/errors');
 
 // GET Users resource action
@@ -40,7 +42,7 @@ exports.show = function(req, res, next) {
   return User.findById(user_id, function (err, user) {
     // returns error if user was not found
     if (user === undefined || user === null)
-      return errors.notFound('The user was not found', next);
+      return errors.notFoundError('The user was not found', next);
     // returns in error case
     if (err) return errors.dbError(err, next);
     // returns json when find users
@@ -61,10 +63,11 @@ exports.create = function(req, res, next) {
 
   // Find Role by id on MongoDB
   return new Promise(function(resolve) {
+    // Here the user created has role 'user' and 'admin'
     // Role.getProtectedRoles(function (err, roles) {
     //   // returns error if roles was not found
     //   if (roles === undefined || roles === null)
-    //     return errors.notFound('The roles was not found', next);
+    //     return errors.notFoundError('The roles was not found', next);
     //   // returns in error case
     //   if (err) return errors.dbError(err, next);
 
@@ -73,10 +76,11 @@ exports.create = function(req, res, next) {
 
     // });
 
+    // All user created should has role 'user'
     Role.findOne({ 'name': 'user' }, function (err, role) {
       // returns error if role was not found
       if (role === undefined || role === null)
-        return errors.notFound('The role was not found', next);
+        return errors.notFoundError('The role was not found', next);
       // returns in error case
       if (err) return errors.dbError(err, next);
 
@@ -109,7 +113,7 @@ exports.update = function(req, res, next) {
   return User.findById(user_id, function (err, user) {
     // returns error if user was not found
     if (user === undefined || user === null)
-      return errors.notFound('The user was not found', next);
+      return errors.notFoundError('The user was not found', next);
     // returns in error case
     if (err) return errors.dbError(err, next);
 
@@ -140,7 +144,7 @@ exports.remove = function(req, res, next) {
   return User.findById(user_id, function (err, user) {
     // returns error if user was not found
     if (user === undefined || user === null)
-      return errors.notFound('The user was not found', next);
+      return errors.notFoundError('The user was not found', next);
     // returns in error case
     if (err) return errors.dbError(err, next);
 

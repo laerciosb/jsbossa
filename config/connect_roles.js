@@ -1,15 +1,19 @@
 // Author - Laércio S Bezerra | laerciosouza@lavid.ufpb.br
 
 /*
- * Connect Roles Settings
+ * CONNECT ROLES
  */
 
 "use strict";
 
-// Required Lib
+// Required Libs
 var ConnectRoles = require('connect-roles');
-var userHelper = require('../helpers/users');
 
+// Required utils
+var userHelper = require('../helpers/users');
+var authHelper = require('../helpers/auth');
+
+// Create new instance of ConnectRoles and define action when unauthorized
 var user = new ConnectRoles({
   failureHandler: function (req, res, action) {
     // optional function to customise code that runs when
@@ -24,14 +28,18 @@ var user = new ConnectRoles({
   }
 });
 
-// Admin users can access all pages
+/*
+ * Admin users can access all pages
+ */
+
 user.use(function (req) {
-  if(req.isAuthenticated()){
-    if(userHelper.isRole(req.user, ['admin'])) return true;
-  }
+  if(userHelper.isRole(req.user, ['admin'])) return true;
 });
 
-// Define methods to validate user roles
+/*
+ * Define methods to validate user roles
+ */
+
 user.use('admin', function (req) {
   return userHelper.isRole(req.user, ['admin']);
 });
@@ -44,18 +52,21 @@ user.use('user', function (req) {
   return userHelper.isRole(req.user, ['user']);
 });
 
-// Define methods to validate action roles
+/*
+ * Define methods to validate action roles
+ */
+ 
 user.use('access users index', function (req) {
-  console.log("access users index");
   return userHelper.isRole(req.user, ['user', 'expert']);
 });
 
 user.use('access users show', function (req) {
-  return userHelper.isRole(req.user, ['expert']);
+  return userHelper.isRole(req.user, ['expert']) || 
+    userHelper.isMe(req.user, req.params.user_id);
 });
 
 user.use('access users edit', function (req) {
-  return userHelper.isMe(req.user, req.params.id);
+  return userHelper.isMe(req.user, req.params.user_id);
 });
 
 module.exports = user;

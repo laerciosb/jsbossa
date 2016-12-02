@@ -1,16 +1,15 @@
 // Author - Laércio S Bezerra | laerciosouza@lavid.ufpb.br
 
 /*
- * User Model
+ * USER MODEL
  */
 
 "use strict";
 
-// Required lib
+// Required libs
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var uniqueValidator = require('mongoose-unique-validator');
-var errors = require('../helpers/errors');
 var bcryptjs = require('bcryptjs');
 
 // Schema
@@ -28,15 +27,13 @@ userSchema.plugin(uniqueValidator);
  * Scopes
  */
 
-// // Return roles from user
-// userSchema.statics.getRoles = function(id) {
-//   if (!mongoose.Types.ObjectId.isValid(id)) return error.typeError('ObjectId is not valid', next);
-//   return this.findOne({ _id: id }).populate('roles', 'name');
-// };
-
 // Compare between encrypted password and not encrypted password
 userSchema.methods.comparePassword = function(password, next) {
-  bcryptjs.compareSync(password, this.password, next);
+  bcryptjs.compare(password, this.password, function(err, success) {
+    if (err) return next(err, 'Authentication failed. Passwords did not match.');
+    else return next(null, success);
+
+  });
 };
 
 /*

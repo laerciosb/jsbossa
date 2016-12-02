@@ -1,14 +1,16 @@
 // Author - Laércio S Bezerra | laerciosouza@lavid.ufpb.br
 
 /*
- * Errors Helper
+ * ERRORS HELPER
  */
 
 "use strict";
+
+// Required utils
 var settings = require('../config/settings');
 
 // Error when not find the resource
-exports.notFound = function(message, next) {
+exports.notFoundError = function(message, next) {
   var err = new Error(message || 'The requested resource couldn\'t be found');
   err.status = settings.errors.notFound;
   next(err);
@@ -18,6 +20,27 @@ exports.notFound = function(message, next) {
 exports.typeError = function(message, next) {
   var err = new Error(message || 'The object type is not valid.');
   err.status = settings.errors.unprocessableEntity;
+  next(err);
+};
+
+// Error when request is not valid
+exports.badRequestError = function(message, next) {
+  var err = new Error(message || 'The request is not valid.');
+  err.status = settings.errors.badRequest;
+  next(err);
+};
+
+// Error when is not possible to continue
+exports.unprocessableError = function(message, next) {
+  var err = new Error(message || 'During the request something went wrong.');
+  err.status = settings.errors.unprocessableEntity;
+  next(err);
+};
+
+// Error when request is not authorized
+exports.notAuthorizedError = function(message, next) {
+  var err = new Error(message || 'The request is not authorized.');
+  err.status = settings.errors.unauthorized;
   next(err);
 };
 

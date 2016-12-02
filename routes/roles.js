@@ -1,21 +1,32 @@
 // Author - Laércio S Bezerra | laerciosouza@lavid.ufpb.br
 
+/*
+ * ROLES ROUTES
+ */
+
+"use strict";
+
+// Required libs
 var express = require('express');
 var router = express.Router();
+
+// Required controllers
 var rolesController = require('../controllers/roles');
-var sessionsHelper = require('../helpers/sessions');
+
+// Required utils
+var authHelper = require('../helpers/auth');
 var user = require('../config/connect_roles');
 
 /*
- ROLES ROUTES
+ * Routes
  */
 
 router
 
   /* REQUIRE Authenticate and authorizated to access roles resources. */
-  // .all('/', [sessionsHelper.authenticated, user.is('admin')], function(req, res, next) {
-  //   next();
-  // })
+  .all('/', [authHelper.authenticated(), user.is('admin')], function(req, res, next) {
+    next();
+  })
 
   /* GET Roles for list all roles. */
   .get('/', rolesController.index)

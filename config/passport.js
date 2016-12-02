@@ -8,27 +8,32 @@
 
 // Required Libs
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-
-// Required user model to LocalStrategy
-var User = require('../models/user');
+var JwtStrategy = require('passport-jwt').Strategy;
+var ExtractJwt = require('passport-jwt').ExtractJwt;
 var bcryptjs = require('bcryptjs');
 
-// Serialize and deserialize user (use on database).
-passport.serializeUser(function(user, done) { done(null, user); });
-passport.deserializeUser(function(user, done) { done(null, user); });
+// Required models
+var User = require('../models/user');
 
-// Local Auth
-passport.use(new LocalStrategy ({ usernameField: 'email',
-  passwordField: 'password' }, function (username, password, done) {
-    User.findOne({ email: username }, function(err, user) {
-      if (err) return done(err);
+// Required utils
+var settings = require('../config/settings');
 
-      if (!user || !bcryptjs.compareSync(password, user.password))
-        return done(null, false, 'Usuário ou senha inválido.');
+// Setup work for the JWT passport strategy
+var opts = {};
+opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
+opts.secretOrKey = settings.jwt.jwtSecret;
 
-      return done(null, user);
-    }).populate('roles', 'name');
+// JWT Auth
+passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+  User.findOne({email: jwt_payload._doc.email}, function(err, user) {
+    if (err) return done(err, false);
+
+    if (!user)
+      done(null, false);
+
+    return done(null, user);
+  })
+    .populate('roles', 'name');
 }));
 
 module.exports = passport;

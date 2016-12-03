@@ -25,7 +25,7 @@ opts.secretOrKey = settings.jwt.jwtSecret;
 
 // JWT Auth
 passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-  User.findOne({email: jwt_payload._doc.email}, function(err, user) {
+  User.findOne({_id: jwt_payload._doc._id}, function(err, user) {
     if (err) return done(err, false);
 
     if (!user)

@@ -46,7 +46,7 @@ userSchema.pre('save', function(next) {
     this.password = bcryptjs.hashSync(this.password, 10);
 
   // Save user reference in role.
-  this.model('Role').update({_id: {$in: this.roles}}, {$push: {users: this._id}}, {multi: true}, next);
+  this.model('Role').update({_id: {$in: this.roles}}, {$push: {users: this}}, {multi: true}, next);
 });
 
 userSchema.pre('remove', function(next){

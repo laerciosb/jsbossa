@@ -85,7 +85,7 @@ exports.update = function(req, res, next) {
       role.name = req.body.name ? req.body.name : role.name;
 
       // Verify if the role is protected
-      resolve(role.verifyRoleIsProtected());
+      resolve(role.isProtected());
     })
       // When promise is ready
       .then(function(err) {
@@ -122,7 +122,7 @@ exports.remove = function(req, res, next) {
     
     new Promise(function(resolve) {
       // Verify if the role is protected
-      resolve(role.verifyRoleIsProtected());
+      resolve(role.isProtected());
     })
       // When promise is ready
       .then(function(err) {

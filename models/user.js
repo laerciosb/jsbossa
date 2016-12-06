@@ -12,6 +12,9 @@ var Schema = mongoose.Schema;
 var uniqueValidator = require('mongoose-unique-validator');
 var bcryptjs = require('bcryptjs');
 
+// Required utils
+var settings = require('../config/settings');
+
 // Schema
 var userSchema = new Schema({
   name: { type: String, required: true },
@@ -26,6 +29,43 @@ userSchema.plugin(uniqueValidator);
 /*
  * Scopes
  */
+
+// Create user by role name
+userSchema.methods.createByRole = function(roleName, next) {
+
+  var user = this;
+  var opts = {};
+
+  // Find Role by id on MongoDB
+  return new Promise(function(resolve) {
+    if (roleName === 'user') opts = { 'name': roleName };
+    else opts = {'name': {$in: [roleName, 'user']}};
+    // All user created should has role 'user'
+    user.model('Role').find(opts, function (err, role) {
+      // returns error if role was not found
+      if (role === undefined || role === null) return next(err, null);
+      // returns in error case
+      if (err) return next(err, null);
+
+      // user.roles.push(role);
+      user.roles = role;
+      resolve(role);
+
+    });
+
+  })
+    // When promise is ready
+    .then(function(role) {
+      // Save user on MongoDB
+      return user.save(function(err, user) {
+        // returns in error case
+        if (err) return next(err, role, null);
+        // returns json when save user
+        return next(null, role, user);
+      });
+  });
+
+};
 
 // Compare between encrypted password and not encrypted password
 userSchema.methods.comparePassword = function(password, next) {

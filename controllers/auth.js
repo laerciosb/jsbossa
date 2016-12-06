@@ -56,34 +56,22 @@ exports.oauth = function (req, res, next) {
       // create new if user was not found
       if (user === undefined || user === null) {
         
+        // Receive req.user
         var user = new User(req.user);
 
-        // Find Role by id on MongoDB
-        return new Promise(function(resolve) {
-          // All user created should has role 'user'
-          Role.findOne({ 'name': 'user' }, function (err, role) {
-            // returns error if role was not found
-            if (role === undefined || role === null)
-              return errors.notFoundError('The role was not found', next);
-            // returns in error case
-            if (err) return errors.dbError(err, next);
-
-            user.roles.push(role);
-            resolve(user);
-
-          });
-
-        })
-          // When promise is ready
-          .then(function(user) {
-            // Save user on MongoDB
-            user.save(function(err, user) {
-              // returns in error case
-              if (err) return errors.dbError(err, next);
-              
-              resolve(user);
-            });
-          });
+        // Save user with role 'user' on MongoDB
+        return user.createByRole('user', function(err, role, user) {
+          // returns error if role was not found
+          if (role === undefined || role === null )
+            return errors.notFoundError('The role was not found', next);
+          // returns error if user was not found
+          if (user === undefined || user === null )
+            return errors.notFoundError('The user was not found', next);
+          // returns in error case
+          if (err) return errors.dbError(err, next);
+          
+          resolve(user);
+        });
 
       } else resolve(user);
 

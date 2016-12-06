@@ -27,12 +27,12 @@ roleSchema.plugin(uniqueValidator);
 var protectedRoles = ["admin", "user"];
 
 // Return roles that can be removed from the user
-roleSchema.statics.getProtectedRoles = function(next) {
+roleSchema.statics.getProtecteds = function(next) {
   return this.find({name: {$in: protectedRoles}}, next);
 };
 
 // Verify if role is protected
-roleSchema.methods.verifyRoleIsProtected = function() {
+roleSchema.methods.isProtected = function() {
   return protectedRoles.indexOf(this.name.toLowerCase()) !== -1 ? true : null;
 };
 

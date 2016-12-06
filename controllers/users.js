@@ -58,47 +58,18 @@ exports.create = function(req, res, next) {
   // Receive body user
   var user = new User(req.body);
   
-  // Import model to find video this description
-  var Role = require('../models/role');
-
-  // Find Role by id on MongoDB
-  return new Promise(function(resolve) {
-    // Here the user created has role 'user' and 'admin'
-    // Role.getProtectedRoles(function (err, roles) {
-    //   // returns error if roles was not found
-    //   if (roles === undefined || roles === null)
-    //     return errors.notFoundError('The roles was not found', next);
-    //   // returns in error case
-    //   if (err) return errors.dbError(err, next);
-
-    //   user.roles = roles;
-    //   resolve(user);
-
-    // });
-
-    // All user created should has role 'user'
-    Role.findOne({ 'name': 'user' }, function (err, role) {
-      // returns error if role was not found
-      if (role === undefined || role === null)
-        return errors.notFoundError('The role was not found', next);
-      // returns in error case
-      if (err) return errors.dbError(err, next);
-
-      user.roles.push(role);
-      resolve(user);
-
-    });
-
-  })
-    // When promise is ready
-    .then(function(user) {
-      // Save user on MongoDB
-      user.save(function(err, user) {
-        // returns in error case
-        if (err) return errors.dbError(err, next);
-        // returns json when save user
-        res.json(user);
-      });
+  // Save user with role 'user' on MongoDB
+  return user.createByRole('admin', function(err, role, user) {
+    // returns error if role was not found
+    if (role === undefined || role === null )
+      return errors.notFoundError('The role was not found', next);
+    // returns error if user was not found
+    if (user === undefined || user === null )
+      return errors.notFoundError('The user was not found', next);
+    // returns in error case
+    if (err) return errors.dbError(err, next);
+    
+    res.json(user);
   });
 
 };

@@ -8,7 +8,17 @@
 
 var config = {};
 
-// Errors code settings
+/*
+ * Host Settings
+ */
+
+var host = 'http://localhost';
+var port = '3000';
+
+/*
+ * Errors Code Settings
+ */
+
 config.errors = {
   unauthorized: 401,
   forbidden: 403,
@@ -24,11 +34,27 @@ config.errors = {
   badGateway: 502
 };
 
-// JWT settings
+/*
+ * JWT Settings
+ */
+
 config.jwt = {
   jwtSecret: "MyS3cr3tK3Y",
   jwtSession: {session: false},
   expiresIn: 10080 // In Seconds
 };
+
+/*
+ * OAuth Authentication Settings
+ */
+
+// Required Keys to use OAuth authentication
+config.oauth = {
+  Facebook : {
+    clientID: process.env.FACEBOOK_CLIENT_ID,
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    profileFields: ['id', 'displayName', 'email', 'photos', 'gender', 'link', 'birthday', 'currency', 'hometown']
+  }
+}
 
 module.exports = config;

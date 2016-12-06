@@ -16,7 +16,7 @@ var bcryptjs = require('bcryptjs');
 var userSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, index: true, unique: true, required: true, uniqueCaseInsensitive: true },
-  password: { type: String, required: true },
+  password: { type: String, default: undefined },
   roles: [{ type: Schema.Types.ObjectId, ref: 'Role' }]
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }, versionKey: false });
 
@@ -42,7 +42,7 @@ userSchema.methods.comparePassword = function(password, next) {
 
 userSchema.pre('save', function(next) {
   // Add bcrypt in password before save.
-  if (this.isModified('password') || this.isNew)
+  if (this.isModified('password') || this.isNew && this.password !== undefined)
     this.password = bcryptjs.hashSync(this.password, 10);
 
   // Save user reference in role.

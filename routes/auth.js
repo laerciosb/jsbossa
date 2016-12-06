@@ -9,6 +9,7 @@
 // Required libs
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
 
 // Required controllers
 var authController = require('../controllers/auth');
@@ -19,7 +20,10 @@ var authController = require('../controllers/auth');
 
 router
 
-  /* POST User authentication login. */
-  .post('/login', authController.login);
+  /* POST User local authentication. */
+  .post('/login', authController.login)
+
+  /* GET Facebook authentication. */
+  .get('/facebook', passport.authenticate('facebook-token'), authController.oauth);
 
 module.exports = router;

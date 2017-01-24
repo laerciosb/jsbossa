@@ -45,6 +45,25 @@ config.jwt = {
 };
 
 /*
+ * Mailer Settings
+ */
+
+config.smtpConfig = {
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // use SSL
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS
+  }
+};
+
+// Settings to send email for user when reset password
+config.mailer = {
+  route: host + ':' + port + '/api/auth/reset_password/'
+}
+
+/*
  * OAuth Authentication Settings
  */
 
@@ -53,7 +72,7 @@ config.oauth = {
   Facebook : {
     clientID: process.env.FACEBOOK_CLIENT_ID,
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-    profileFields: ['id', 'displayName', 'email', 'photos', 'gender', 'link', 'birthday', 'currency', 'hometown']
+    profileFields: ['id', 'displayName', 'email', 'photos', 'gender', 'birthday']
   }
 }
 

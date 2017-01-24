@@ -8,83 +8,173 @@
 
 // Required Libs
 var jwt = require('jsonwebtoken');
+var crypto = require('crypto');
 
 // Required models
 var User = require('../models/user');
-var Role = require('../models/role');
 
 // Required utils
 var settings = require('../config/settings');
-var errors = require('../helpers/errors');
+var mailerHelper = require('../helpers/mailer');
+var errorsHelper = require('../helpers/errors');
 
-// POST Request to local authentication action
+// POST Auth action to local authentication
 exports.login = function(req, res, next) {
+  // Find user by friendlyId on MongoDB
+  return User.findOne({email: req.body.email})
+    // When promise is ready
+    .then(function(user) {
+      // returns error if user was not found
+      if (!user) throw errorsHelper.notFoundError(t('User.NotFound', req.body.email));
 
-  User.findOne({email: req.body.email}, function(err, user) {
-    // returns error if user was not found
-    if (user === undefined || user === null)
-      return errors.notFoundError('The user was not found', next);
-    // returns in error case
-    if (err) return errors.dbError(err, next);
+      // Check if password matches
+      return user.comparePassword(req.body.password)
+        .then(function(success) {
+          // returns error if authentication failed
+          if(!success) throw errorsHelper.unprocessableError(t('User.PasswordFail'));
+         
+          // Create token if the password matched and no error was thrown
+          var token = jwt.sign(user, settings.jwt.jwtSecret, {
+            expiresIn: settings.jwt.expiresIn
+          });
+          // returns json with user token
+          return res.json({ token: 'JWT ' + token });
+        });
+    })
+    // Catch all errors and call the error handler
+    .catch(function(err) {
+      // returns case custom error
+      if (err.status) return next(err);
+      // returns case generic error
+      return next(errorsHelper.dbError(err));
+    });
+};
 
-    // Check if password matches
-    user.comparePassword(req.body.password, function(err, isMatch) {
-      // returns error if authentication failed
-      if (err || !isMatch)
-        return errors.unprocessableError('Authentication failed. Passwords did not match.', next);
-
-      // Create token if the password matched and no error was thrown
+// POST Auth action to authentication from oauth
+exports.oauth = function(req, res, next) {
+  // Receive req.user
+  var user = new User(req.user);
+  
+  // Save user with role 'user', case exists some user on MongoDB
+  return user.findOrCreate()
+    // When promise is ready
+    .then(function(user) {
+      // Create token to user if no error was thrown
       var token = jwt.sign(user, settings.jwt.jwtSecret, {
         expiresIn: settings.jwt.expiresIn
       });
+      // returns json with user token
       res.json({ token: 'JWT ' + token });
-
+    })
+    // Catch all errors and call the error handler
+    .catch(function(err) {
+      // returns case custom error
+      if (err.status) return next(err);
+      // returns case generic error
+      return next(errorsHelper.dbError(err));
     });
-
-  });
-
 };
 
-// POST Request to oauth action
-exports.oauth = function (req, res, next) {
+// POST Auth action to request reset password
+exports.resetPassword = function(req, res, next) {
+  var token = null;
 
-  User.findOne({email: req.user.email}, function(err, user) {
-    // returns in error case
-    if (err) return errors.dbError(err, next);
+  // Generate hash token to reset password
+  return Promise.resolve(crypto.randomBytes(20))
+    // When promise is ready
+    .then(function(buf) {
+      // get token
+      token = buf.toString('hex');
 
-    new Promise(function(resolve) {
-      // create new if user was not found
-      if (user === undefined || user === null) {
-        
-        // Receive req.user
-        var user = new User(req.user);
-
-        // Save user with role 'user' on MongoDB
-        return user.createByRole('user', function(err, role, user) {
-          // returns error if role was not found
-          if (role === undefined || role === null )
-            return errors.notFoundError('The role was not found', next);
-          // returns error if user was not found
-          if (user === undefined || user === null )
-            return errors.notFoundError('The user was not found', next);
-          // returns in error case
-          if (err) return errors.dbError(err, next);
-          
-          resolve(user);
-        });
-
-      } else resolve(user);
-
+      // Find user by friendlyId on MongoDB
+      return User.findOne({email: req.body.email})
     })
-      .then(function(user) {
-        // Create token to user if no error was thrown
-        var token = jwt.sign(user, settings.jwt.jwtSecret, {
-          expiresIn: settings.jwt.expiresIn
+    // When promise is ready
+    .then(function(user) {
+      // returns error if user was not found
+      if (!user) throw errorsHelper.notFoundError(t('User.NotFound', req.body.email));
+      
+      // Add data user
+      user.resetPasswordToken = token;
+      user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+      // Update user on MongoDB
+      return user.save();
+    })
+    // When promise is ready
+    .then(function(user) {
+      var mailOptions = {
+        emails: user.email,
+        title: t('Mailer.Options.ResetPassword.Title'),
+        subject: t('Mailer.Options.ResetPassword.Subject'),
+        templatePath: './public/reset_password.pug',
+        variables: {
+          name: user.name,
+          linkToRenewPassword: settings.mailer.route + user.resetPasswordToken
+        }
+      };
+
+      return mailerHelper.renderAndSendMail(mailOptions)
+        // When promise is ready
+        .then(function() {
+          return res.json({
+            message: t('Mailer.ResetPasswordSuccess', user.email)
+          });
         });
-        res.json({ token: 'JWT ' + token });
+    })
+    // Catch all errors and call the error handler
+    .catch(function(err) {
+      // returns case custom error
+      if (err.status) return next(err);
+      // returns case generic error
+      return next(errorsHelper.dbError(err));
+    });
+};
 
-      });
+// POST Auth action to create new password from token
+exports.setNewPassword = function(req, res, next) {
+  return User.findOne({
+    resetPasswordToken: req.params.token,
+    resetPasswordExpires: {$gt: Date.now()}
+  })
+    // When promise is ready
+    .then(function(user) {
+      // returns error if user was not found
+      if (!user) throw errorsHelper.notFoundError(t('Mailer.ResetPasswordExpires'));
 
-  });
+      // Add data user
+      user.password = req.body.password;
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+      // Update user on MongoDB
+      return user.save();
+    })
+    // When promise is ready
+    .then(function(user) {
+      var mailOptions = {
+        emails: user.email,
+        title: t('Mailer.Options.NewPassword.Title'),
+        subject: t('Mailer.Options.NewPassword.Subject'),
+        templatePath: './public/confirmation_reset_password.pug',
+        variables: {
+          name: user.name,
+          email: user.email
+        }
+      };
 
+      return mailerHelper.renderAndSendMail(mailOptions)
+        // When promise is ready
+        .then(function() {
+          return res.json({
+            message: t('Mailer.NewPasswordSuccess', user.email)
+          });
+        });
+        
+    })
+    // Catch all errors and call the error handler
+    .catch(function(err) {
+      // returns case custom error
+      if (err.status) return next(err);
+      // returns case generic error
+      return next(errorsHelper.dbError(err));
+    });
 };

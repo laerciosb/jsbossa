@@ -1,0 +1,55 @@
+{
+  "Lang": "Português - BR",
+  "Access": {
+    "Unauthorized": "Acesso Negado - Para acessar este recurso é necessária permissão: %s",
+    "Cors": "Acesso Negado - Para acessar este recurso é necessário ter origem conhecida"
+  },
+  "Error": {
+    "Duplicate": "O objeto já existe e não pode ser duplicado",
+    "NotFound": "O recurso solicitado não foi encontrado",
+    "ObjectType": "O tipo do objeto não é válido",
+    "BadRequest": "A requisição solicitada não é válida",
+    "Unprocessable": "Durante a requisição algo deu errado",
+    "NotAuthorized": "Essa requisição não está autorizada",
+    "Database": "Um problema foi detectado durante o acesso ao banco de dados",
+    "BusinessRule": "Devido a regra de negócio a solicitação não pôde continuar"
+  },
+  "Mailer": {
+    "TemplateFail": "Não foi possível acessar o template de email",
+    "SendFail": "Não foi possível enviar o email",
+    "ResetPasswordSuccess": "Um email foi enviado para %s contendo instruções para recuperar sua senha",
+    "ResetPasswordExpires": "Este token expirou, solicite a recuperação de senha para gerar um novo token de acesso",
+    "NewPasswordSuccess": "A senha de %s foi atualizada com sucesso",
+    "Options": {
+      "ResetPassword": {
+        "Title": "Recuperação de senha",
+        "Subject": "A recuperação de senha foi acionada..."
+      },
+      "NewPassword": {
+        "Title": "Senha atualizada",
+        "Subject": "Sua senha foi atualizada com sucesso..."
+      }
+    }
+  },
+  "User": {
+    "NotFound": "O usuário %s não foi encontrado",
+    "Duplicate": "O usuário já existe",
+    "PasswordFail": "A senha informada não é válida",
+    "Field": {
+      "Email": {
+        "Fail": "O campo email não é válido",
+        "PatternFail": "O campo email não está seguindo um padrão aceitável"
+      }
+    },
+    "Type": {
+      "Admin": "O usuário admin não pode ser removido"
+    }
+  },
+  "Role": {
+    "NotFound": {
+      "One": "O perfil {{name}} não foi encontrado",
+      "Other": "[0] Nenhum perfil foi encontrado|[2,[ Os perfis {{name}} não foram encontrados"
+    },
+    "BusinessRuleFail": "Desculpe, este perfil não pode ser alterado ou removido"
+  }
+}

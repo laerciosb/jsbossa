@@ -24,10 +24,12 @@ Application test.
 
 2. Start the server and access the browser
   - user@user:~/path_to_cloned_folder$ **npm start**
-  - Access the browser http://localhost:3000
 
-**OBS: Is required create the roles 'admin', 'user' and 'expert' before create users.**
+3. Seed database required datas
+  - user@user:~/path_to_cloned_folder$ **mongoimport --db jsbossa --file ./seeds/roles.json**
 
+**OBS: Is required create the roles 'admin' and 'user' before create users.**
+**OBS: Is optional create the others collections but if you want can repeat the last command alter the name of json file. Ex.: mongoimport --db jsbossa --file ./seeds/users.json**
 
 ---
 
@@ -45,15 +47,18 @@ Application test.
 |   Action                                 | Required          | Method    | URL                                               
 | -----------------------------------------|-------------------|-----------|----------------------------------------------------- 
 |   Sign in user (local authentication)    |                   |  `POST`   | /api/auth/login
+|   Register or Sign in (facebook oauth)   |                   |  `GET`    | /api/auth/facebook?access_token=:token
+|   Get Reset Password                     |                   |  `POST`   | /api/auth/reset_password
+|   Set new password after reset password  | Get Reset Pass    |  `POST`   | /api/auth/reset_password/:token
 
 ### Users ###
 |   Action                                 | Required          | Method    | URL                                               
 | -----------------------------------------|-------------------|-----------|----------------------------------------------------- 
-|   List users                             | Auth and User     |  `GET`    | /api/users
-|   Create user                            | Auth and Expert   |  `POST`   | /api/users
-|   Read user                              | Auth and Expert   |  `GET`    | /api/users/:id
-|   Update user                            | Auth and Expert   |  `PUT`    | /api/users/:id
-|   Delete user                            | Auth and Expert   |  `DELETE` | /api/users/:id
+|   List users                             | Auth and Admin    |  `GET`    | /api/users
+|   Create user                            |                   |  `POST`   | /api/users
+|   Read user                              | Auth              |  `GET`    | /api/users/:id
+|   Update user                            | Auth and Admin    |  `PUT`    | /api/users/:id
+|   Delete user                            | Auth and Admin    |  `DELETE` | /api/users/:id
 
 ### Roles ###
 |   Action                                 | Required          | Method    | URL
@@ -63,6 +68,13 @@ Application test.
 |   Read role                              | Auth and Admin    |  `GET`    | /api/roles/:id
 |   Update role                            | Auth and Admin    |  `PUT`    | /api/roles/:id
 |   Delete role                            | Auth and Admin    |  `DELETE` | /api/roles/:id
+
+---
+
+## Tests ##
+**Only after mongodb seeded**
+* Find user queries:
+>localhost:3000/api/users?gender=male&image=true&provider=Facebook&name=LaéR&email=fallen284@hotmail.com&_id=5852425b8995b53ada29aecc&bn=1986-12-25&bx=2000-12-25
 
 ---
 

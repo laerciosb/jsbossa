@@ -6,13 +6,16 @@ var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var routesVersioning = require('express-routes-versioning')();
 
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./docs/swagger.json');
+global.Promise = require("bluebird");
 
-var db = require('./config/db');
+var swaggerUi = require('swagger-ui-express');
+var swaggerDocument = require('./docs/swagger.json');
+
 var settings = require('./config/settings');
 var connectRoles = require('./config/connect_roles');
 var passport = require('./config/passport');
+var i18n = require('./config/i18n');
+var cors = require('./config/cors');
 
 var auth = require('./routes/auth');
 var users = require('./routes/users');
@@ -30,13 +33,11 @@ app.use(expressValidator());
 app.use(passport.initialize());
 app.use(connectRoles.middleware());
 
+// default: using 'accept-language' header to guess language settings 
+app.use(i18n.init);
+
 // allow cross origin requests
-app.use(function(req, res, next) {
-  res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(cors);
 
 // By default, accept-version headers are used for versioning,
 // below middleware overrrides it by setting req.version
@@ -55,7 +56,9 @@ app.use('/api/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // error handler response
 app.use(function(err, req, res, next) {
   if (app.get('env') !== 'development') delete err.stack;
-  return res.status(err.status).json({
+  if (!err.status) err.status = 500;
+  
+  res.status(err.status).json({
     error: {
       message: err.message,
       status: err.status,
@@ -68,7 +71,16 @@ app.use(function(err, req, res, next) {
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
-  next(err);
+
+  if (app.get('env') !== 'development') delete err.stack;
+
+  res.status(err.status).json({
+    error: {
+      message: err.message,
+      status: err.status,
+      stack: err.stack
+    }
+  });
 });
 
 // error handlers

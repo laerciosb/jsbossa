@@ -1,0 +1,27 @@
+{
+  "_id":{"$oid":"5852425b8995b53ada29aecc"},
+  "friendlyId":"laercio-souza-ryEkBWeEe",
+  "updated_at":{"$date":"1990-12-15T11:56:11.965Z"},
+  "created_at":{"$date":"1987-12-15T07:12:27.031Z"},
+  "name":"Laércio Souza",
+  "email":"fallen284@hotmail.com",
+  "birthday":{"$date":"1987-05-23T03:00:00.000Z"},
+  "gender":"male",
+  "image":"https://scontent.xx.fbcdn.net/v/t1.0-1/c226.7.706.706/s50x50/10307200_10201124667958482_2747611622061758606_n.jpg?oh=acae18b6343cb76706e5971bc0333aaf\u0026oe=58B9D9CB",
+  "roles":[{"$oid":"5851a7fbdebb722280583ae4"},{"$oid":"5851a801debb722280583ae5"}],
+  "provider":"facebook",
+  "password":"$2a$10$RDpFgStiJrTzhojDx9KIxO69G5CMrUcsVjZ2nnhBXbksPZ7AdgIxW"
+}
+{
+  "_id":{"$oid":"585242a2a1cb233b4cba80e2"},
+  "friendlyId":"leia-SJosfpkVl",
+  "updated_at":{"$date":"2016-12-15T07:13:38.454Z"},
+  "created_at":{"$date":"2000-12-15T07:13:38.454Z"},
+  "name":"Léia",
+  "birthday":{"$date":"2000-05-23T03:00:00.000Z"},
+  "gender":"female",
+  "email":"leia@gmail.com",
+  "password":"$2a$10$1is.DSXRxIWakh.rh/t7COK91mI3SP/IxRxAEMaCdmWOEcJa/QHwu",
+  "roles":[{"$oid":"5851a801debb722280583ae5"}],
+  "provider":"local"
+}

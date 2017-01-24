@@ -9,7 +9,12 @@
 // Required Libs
 var passport = require('passport');
 
-// Require valid token authentication to pass
+// Require valid local token authentication to pass
 exports.authenticated = function(req, res) {
   return passport.authenticate('jwt', { session: false });
+};
+
+// Require valid facebook token authentication to pass
+exports.facebook = function(req, res) {
+  return passport.authenticate('facebook-token');
 };

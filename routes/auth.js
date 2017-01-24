@@ -9,10 +9,12 @@
 // Required libs
 var express = require('express');
 var router = express.Router();
-var passport = require('passport');
 
 // Required controllers
 var authController = require('../controllers/auth');
+
+// Required utils
+var authHelper = require('../helpers/auth');
 
 /*
  * Routes
@@ -24,6 +26,12 @@ router
   .post('/login', authController.login)
 
   /* GET Facebook authentication. */
-  .get('/facebook', passport.authenticate('facebook-token'), authController.oauth);
+  .get('/facebook', authHelper.facebook(), authController.oauth)
+
+  /* POST User send email to recover password. */
+  .post('/reset_password', authController.resetPassword)
+
+  /* POST User send token received in email to create new password. */
+  .post('/reset_password/:token', authController.setNewPassword);
 
 module.exports = router;

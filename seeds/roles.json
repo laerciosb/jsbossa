@@ -1,0 +1,16 @@
+{
+  "_id":{"$oid":"5851a7fbdebb722280583ae4"},
+  "updated_at":{"$date":"2016-12-15T11:56:12.206Z"},
+  "created_at":{"$date":"2016-12-14T20:13:47.823Z"},
+  "name":"admin",
+  "friendlyId":"admin-ryEkBWeEe",
+  "users":[{"$oid":"5852425b8995b53ada29aecc"}]
+}
+{
+  "_id":{"$oid":"5851a801debb722280583ae5"},
+  "updated_at":{"$date":"2016-12-15T11:56:12.206Z"},
+  "created_at":{"$date":"2016-12-14T20:13:53.697Z"},
+  "name":"user",
+  "friendlyId":"user-SJosfpkVl",
+  "users":[{"$oid":"5852425b8995b53ada29aecc"},{"$oid":"585242a2a1cb233b4cba80e2"}]
+}

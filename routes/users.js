@@ -38,6 +38,14 @@ router
     [authHelper.authenticated(), user.can('access users edit')], usersController.update)
 
   /* DELETE User by ID for remove the user. */
-  .delete('/:user_id', [authHelper.authenticated(), user.is('admin')], usersController.remove);
+  .delete('/:user_id', [authHelper.authenticated(), user.is('admin')], usersController.remove)
+
+  /* GET User Roles by ID for show the roles from user. */
+  .get('/:user_id/roles',
+    [authHelper.authenticated(), user.is('admin')], usersController.roles)
+
+  /* GET User Role for add or remove role to user. */
+  .get('/:user_id/roles/:role_id',
+    [authHelper.authenticated(), user.is('admin')], usersController.setRole);
 
 module.exports = router;

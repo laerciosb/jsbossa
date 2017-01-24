@@ -9,11 +9,17 @@
 // Required Libs
 var mongoose = require('mongoose');
 
-// My Lib for javascript Promises
-mongoose.Promise = require('bluebird');
+// My global lib for javascript Promises
+mongoose.Promise = global.Promise;
 
 // Connection
-mongoose.connect('mongodb://localhost/jsbossa', function(err) {
-  if(err) console.log('MongoDB connection error: ', err);
-  else console.log('MongoDB connection successful');
+mongoose.connect('mongodb://localhost/jsbossa');
+
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'MongoDB connection error: '));
+db.once('open', function(){
+  console.log('MongoDB connection successful');
 });
+
+module.exports = mongoose;

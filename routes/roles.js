@@ -34,6 +34,9 @@ router
   /* GET Role by ID for show the role. */
   .get('/:role_id', rolesController.show)
 
+  /* GET Role Users by ID for show the users from role. */
+  .get('/:role_id/users', rolesController.users)
+
   /* POST Role for create a role. */
   .post('/', rolesController.create)
 

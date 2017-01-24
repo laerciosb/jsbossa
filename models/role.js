@@ -7,13 +7,19 @@
 "use strict";
 
 // Required libs
-var mongoose = require('mongoose');
+var mongoose = require('../config/db');
 var Schema = mongoose.Schema;
 var uniqueValidator = require('mongoose-unique-validator');
+var shortId = require('shortid');
+
+// Required utils
+var appHelper = require('../helpers/application');
 
 // Schema
 var roleSchema = new Schema({
-  name: { type: String, index: true, unique: true, required: true, uniqueCaseInsensitive: true },
+  name: { type: String, unique: true, required: true, uniqueCaseInsensitive: true, 
+    lowercase: true, trim: true },
+  friendlyId: { type: String, unique: true, uniqueCaseInsensitive: true, trim: true },
   users: [{type: Schema.Types.ObjectId, ref: 'User'}]
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }, versionKey: false });
 
@@ -33,12 +39,25 @@ roleSchema.statics.getProtecteds = function(next) {
 
 // Verify if role is protected
 roleSchema.methods.isProtected = function() {
-  return protectedRoles.indexOf(this.name.toLowerCase()) !== -1 ? true : null;
+  return protectedRoles.includes(this.friendlyId.slice(0, this.friendlyId.lastIndexOf('-')));
 };
 
 /*
  * Triggers
  */
+
+roleSchema.pre('save', function(next){
+  // Remove extra whitespaces presents beetwen fullname.
+  this.name = appHelper.replaceSpecialChars(this.name.replace(/\s+/g, " ").replace(/ /g, "-"));
+
+  // Add automatic friendlyId.
+  if (!this.friendlyId) {
+    var friendlyId = shortId.generate();
+    this.friendlyId = this.name.concat("-", friendlyId);
+  }
+
+  next();
+});
 
 roleSchema.pre('remove', function(next){
   // Remove all users that reference the removed roles.

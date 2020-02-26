@@ -17,7 +17,7 @@
     "body-parser": "~1.13.2",
     "connect-roles": "^3.1.2",
     "cors": "^2.8.1",
-    "debug": "~2.2.0",
+    "debug": "~4.1.1",
     "express": "~4.13.1",
     "express-routes-versioning": "^0.3.0",
     "express-validator": "^2.20.8",
